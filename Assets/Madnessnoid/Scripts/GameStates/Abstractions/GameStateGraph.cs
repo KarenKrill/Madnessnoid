@@ -13,7 +13,8 @@ namespace Madnessnoid.Abstractions
         private readonly IDictionary<GameState, IList<GameState>> _transitions = new Dictionary<GameState, IList<GameState>>()
         {
             { GameState.Initial, new List<GameState> { GameState.Loading, GameState.Exit } },
-            { GameState.Loading, new List<GameState> { GameState.Gameplay, GameState.Exit } },
+            { GameState.Loading, new List<GameState> { GameState.MainMenu, GameState.Gameplay, GameState.Exit } },
+            { GameState.MainMenu, new List<GameState> { GameState.Loading, GameState.Exit } },
             { GameState.Gameplay, new List<GameState> { GameState.Pause, GameState.LevelWin, GameState.LevelLose, GameState.Exit } },
             { GameState.LevelWin, new List<GameState> { GameState.Loading, GameState.Exit } },
             { GameState.LevelLose, new List<GameState> { GameState.Loading, GameState.Exit } },

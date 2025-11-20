@@ -1,0 +1,21 @@
+{
+    "name": "Madnessnoid.UI.Views",
+    "rootNamespace": "Madnessnoid.UI.Views",
+    "references": [
+        "GUID:6055be8ebefd69e48b49212b09b47b2f",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23",
+        "GUID:bb790f022996c434fa47a5a2684d1d2b",
+        "GUID:7a46791a36c29db4382df4ea59e1f085",
+        "GUID:c4d2c914c542f7a44a74a26c3bb547c1",
+        "GUID:8a5a7397b044f6f41ad30236064a8e13"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,16 @@
+{
+    "name": "Madnessnoid.UI.Views.Abstractions",
+    "rootNamespace": "Madnessnoid.UI.Views.Abstractions",
+    "references": [
+        "GUID:7a46791a36c29db4382df4ea59e1f085"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

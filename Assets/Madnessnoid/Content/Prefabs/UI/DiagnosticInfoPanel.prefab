@@ -276,6 +276,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DefaultFocusObject: {fileID: 0}
   _canvasGroup: {fileID: 4210429268677239335}
+  _sortOrder: 99
   _fadeInDuration: 0.2
   _fadeOutDuration: 0.2
   _fpsText: {fileID: 8398088855302952881}

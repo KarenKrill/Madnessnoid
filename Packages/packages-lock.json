@@ -8,11 +8,11 @@
       "hash": "73a63b7f672b88f7e9992f6917eb458a8cbb6fa9"
     },
     "com.karenkrill.unicore": {
-      "version": "https://github.com/KarenKrill/UniCore.git?path=Assets/UniCore",
+      "version": "https://github.com/KarenKrill/UniCore.git?path=Assets/UniCore#dev",
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "b510596f2e6611ef8e946141ded53761c0b7c860"
+      "hash": "0b4c86d58b94cf66f9caccd6b96567b6c4731612"
     },
     "com.svermeulen.extenject": {
       "version": "https://github.com/modesttree/Zenject.git?path=UnityProject/Assets/Plugins/Zenject",

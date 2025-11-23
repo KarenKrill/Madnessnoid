@@ -66,10 +66,10 @@ namespace KarenKrill.DataStorage
 #endif
                 if (!AuthenticationService.Instance.IsSignedIn)
                 {
-                    AuthenticationService.Instance.Expired += () => Debug.LogWarning("Auth expired");
-                    AuthenticationService.Instance.SignedIn += () => Debug.Log("Auth signed in");
-                    AuthenticationService.Instance.SignedOut += () => Debug.Log("Auth signed out");
-                    AuthenticationService.Instance.SignInFailed += ex => Debug.Log($"Auth SignIn failed: {ex}");
+                    AuthenticationService.Instance.Expired += () => _logger.LogWarning(nameof(CloudSaveDataStorage), "Auth expired");
+                    AuthenticationService.Instance.SignedIn += () => _logger.Log(nameof(CloudSaveDataStorage), "Auth signed in");
+                    AuthenticationService.Instance.SignedOut += () => _logger.Log(nameof(CloudSaveDataStorage), "Auth signed out");
+                    AuthenticationService.Instance.SignInFailed += ex => _logger.LogError(nameof(CloudSaveDataStorage), $"Auth SignIn failed: {ex}");
                     await AuthenticationService.Instance.SignInAnonymouslyAsync();
                 }
 #if !UNITY_WEBGL

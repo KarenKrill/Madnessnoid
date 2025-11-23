@@ -1,0 +1,173 @@
+﻿#nullable enable
+
+using System;
+using System.Collections.Generic;
+
+using UnityEngine;
+
+using Cysharp.Threading.Tasks;
+
+using KarenKrill.UniCore.StateSystem.Abstractions;
+
+using KarenKrill.ContentLoading.Abstractions;
+using KarenKrill.DataStorage.Abstractions;
+using Madnessnoid.Abstractions;
+using Madnessnoid.UI.Presenters.Abstractions;
+
+namespace Madnessnoid.GameStates
+{
+    public class LoadingStateHandler : PresentableStateHandlerBase<GameState>, IStateHandler<GameState>
+    {
+        public override GameState State => GameState.Loading;
+
+        public LoadingStateHandler(ILogger logger,
+            IStateSwitcher<GameState> stateSwitcher,
+            GameSettings gameSettings,
+            IContentLoaderPresenter contentLoaderPresenter,
+            IDataStorage dataStorage,
+            ISceneLoader sceneLoader) : base(contentLoaderPresenter)
+        {
+            _logger = logger;
+            _stateSwitcher = stateSwitcher;
+            _gameSettings = gameSettings;
+            _saveSettingsData[_settingsDataKey] = _gameSettings;
+            _contentLoaderPresenter = contentLoaderPresenter;
+            _dataStorage = dataStorage;
+            _sceneLoader = sceneLoader;
+        }
+        public override void Enter(GameState prevState, object? context = null)
+        {
+            _logger.Log(nameof(LoadingStateHandler), nameof(Enter));
+            base.Enter(prevState);
+
+            // Speeding up scene loading by reducing the frame rate
+            _initialThreadPriority = Application.backgroundLoadingPriority;
+            Application.backgroundLoadingPriority = ThreadPriority.High;
+
+            if (prevState == GameState.Initial)
+            {
+                InitialMenuSceneLoad(context).Forget();
+            }
+            else
+            {
+                LoadSceneAsync(context).Forget();
+            }
+        }
+        public override void Exit(GameState nextState)
+        {
+            base.Exit(nextState);
+            _logger.Log(nameof(LoadingStateHandler), nameof(Exit));
+            Application.backgroundLoadingPriority = _initialThreadPriority;
+        }
+
+        private static readonly string _settingsDataKey = "Settings";
+        private static readonly string _mainMenuSceneName = "MainMenuScene";
+        private static readonly string _levelSceneBaseName = "LevelSceneBase";
+        private static readonly string _connectingToServerStageText = "Connecting to the server...";
+        private static readonly string _dataLoadingStageText = "Loading profile data...";
+        private static readonly string _menuLoadingStageText = "Loading main menu...";
+        private static readonly string _levelLoadingStageText = "Loading a level...";
+        private static readonly string _successStatusText = "Press any key to start";
+        private static readonly string _failureStatusText = "Failed to connect to the server. Please try again later.";
+
+        private readonly ILogger _logger;
+        private readonly IStateSwitcher<GameState> _stateSwitcher;
+        private readonly GameSettings _gameSettings;
+        private readonly IContentLoaderPresenter _contentLoaderPresenter;
+        private readonly IDataStorage _dataStorage;
+        private readonly ISceneLoader _sceneLoader;
+
+        private readonly Dictionary<string, object?> _saveSettingsData = new() { { _settingsDataKey, null } };
+        private readonly Dictionary<string, Type> _loadSettingsMetadata = new() { { _settingsDataKey, typeof(GameSettings) } };
+        private ThreadPriority _initialThreadPriority;
+
+        private async UniTask InitialMenuSceneLoad(object? context)
+        {
+            try
+            {
+                _contentLoaderPresenter.ProgressValue = 0;
+                _contentLoaderPresenter.StageText = _connectingToServerStageText;
+                await _dataStorage.InitializeAsync();
+                _contentLoaderPresenter.StageText = _dataLoadingStageText;
+                _gameSettings.SettingsChanged += OnSettingsChanged;
+                await LoadDataAsync();
+                await LoadSceneAsync(context);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(nameof(LoadingStateHandler), $"{ex.GetType()} occured while trying to initialize data storage: {ex}");
+                _contentLoaderPresenter.StatusText = _failureStatusText;
+            }
+        }
+        private async UniTask LoadDataAsync()
+        {
+            try
+            {
+                var data = await _dataStorage.LoadAsync(_loadSettingsMetadata);
+#if !UNITY_WEBGL
+                await UniTask.SwitchToMainThread();
+#endif
+                if (data.TryGetValue(_settingsDataKey, out var settingsObj) && settingsObj is GameSettings settings)
+                {
+                    _gameSettings.FreezeSettingsChanged = true;
+                    try
+                    {
+                        _gameSettings.ShowFps = settings.ShowFps;
+                        _gameSettings.MusicVolume = Mathf.Clamp01(settings.MusicVolume);
+                        _gameSettings.QualityLevel = settings.QualityLevel;
+                    }
+                    finally
+                    {
+                        _gameSettings.FreezeSettingsChanged = false;
+                    }
+                }
+                else
+                {
+                    _logger.LogWarning(nameof(LoadingStateHandler), $"No saved \"{_settingsDataKey}\" data key");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(nameof(LoadingStateHandler), $"Player data loading failed: {ex}");
+            }
+        }
+        private async UniTask LoadSceneAsync(object? context)
+        {
+            _contentLoaderPresenter.ProgressValue = 0;
+            if (context is not LoadingStateContext loadingContext || loadingContext.LevelIndex < 0)
+            {
+                _contentLoaderPresenter.StageText = _menuLoadingStageText;
+                await _sceneLoader.LoadAsync(_mainMenuSceneName, new SceneLoadParameters(progressAction: OnSceneLoadProgressChanged, activationRequestAction: OnActivationRequested));
+                _stateSwitcher.TransitTo(GameState.MainMenu, null);
+            }
+            else
+            {
+                _contentLoaderPresenter.StageText = _levelLoadingStageText;
+                await _sceneLoader.LoadAsync(_levelSceneBaseName, new SceneLoadParameters(progressAction: OnSceneLoadProgressChanged, activationRequestAction: OnActivationRequested));
+                _stateSwitcher.TransitTo(GameState.Gameplay, new GameplayStateContext(true, loadingContext.LevelIndex));
+            }
+        }
+
+        private void OnSettingsChanged()
+        {
+            _dataStorage.SaveAsync(_saveSettingsData).AsUniTask().Forget();
+        }
+        private void OnSceneLoadProgressChanged(float progress)
+        {
+            _contentLoaderPresenter.ProgressValue = progress;
+        }
+        private void OnActivationRequested(Action allowActivationAction)
+        {
+            _contentLoaderPresenter.ProgressValue = 1;
+            void OnContentLoaderPresenterContinue()
+            {
+                _contentLoaderPresenter.EnableContinue = false;
+                _contentLoaderPresenter.Continue -= OnContentLoaderPresenterContinue;
+                allowActivationAction?.Invoke();
+            }
+            _contentLoaderPresenter.Continue += OnContentLoaderPresenterContinue;
+            _contentLoaderPresenter.StatusText = _successStatusText;
+            _contentLoaderPresenter.EnableContinue = true;
+        }
+    }
+}

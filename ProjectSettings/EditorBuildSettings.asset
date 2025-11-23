@@ -8,6 +8,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Madnessnoid/Scenes/BootScene.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
+  - enabled: 1
+    path: Assets/Madnessnoid/Scenes/MainMenuScene.unity
+    guid: dd12768ff7f554341b94747c72ec02f9
+  - enabled: 1
+    path: Assets/Madnessnoid/Scenes/LevelSceneBase.unity
+    guid: c7d9b292c105da746836eb39a8a35e92
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

@@ -57,6 +57,7 @@ namespace Madnessnoid
         public void PlayMusic(AudioClip audioClip)
         {
             _musicSource.clip = audioClip;
+            _musicSource.loop = true;
             _musicSource.Play();
         }
         public void PauseMusic() => _musicSource.Pause();

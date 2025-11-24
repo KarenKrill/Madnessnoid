@@ -2,6 +2,8 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
+using TMPro;
+
 using KarenKrill.UniCore.UI.Views;
 
 namespace Madnessnoid.UI.Views
@@ -10,10 +12,15 @@ namespace Madnessnoid.UI.Views
 
     public class InGameMenuView : ViewBehaviour, IInGameMenuView
     {
-#nullable enable
-        public event Action? PauseRequested;
-#nullable restore
+        public string HitPointsCountText { set => _hitPointsCountText.text = value; }
+        public Sprite HitPointIcon { set => _hitPointImage.sprite = value; }
 
+        public event Action PauseRequested;
+
+        [SerializeField]
+        private TextMeshProUGUI _hitPointsCountText;
+        [SerializeField]
+        private Image _hitPointImage;
         [SerializeField]
         private Button _pauseButton;
 

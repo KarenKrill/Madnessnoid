@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fd85cf6be9ac0e43ababc1d86e86d64, type: 3}
   m_Name: BloodyFleshTheme
   m_EditorClassIdentifier: 
+  <HitPointIcon>k__BackingField: {fileID: 21300000, guid: 0e1c5d482d66b6941aafb89c3bac56a6, type: 3}
   _mainMenuBackground:
     <Image>k__BackingField: {fileID: 21300000, guid: ee46041de83d48048a50ec3ed6c0ccfd, type: 3}
     <Music>k__BackingField: {fileID: 8300000, guid: 60427cf3d80e5c84493a23afa7c2bf36, type: 3}

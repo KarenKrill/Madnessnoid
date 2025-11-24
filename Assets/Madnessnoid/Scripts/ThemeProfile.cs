@@ -12,6 +12,8 @@ namespace Madnessnoid
     {
         public ISceneBackgroundTheme MainMenuBackground => _mainMenuBackground;
         public List<ISceneBackgroundTheme> LevelsBackground { get; } = new();
+        [field: SerializeField]
+        public Sprite HitPointIcon { get; private set; }
 
         [SerializeField]
         private SceneBackgroundTheme _mainMenuBackground;

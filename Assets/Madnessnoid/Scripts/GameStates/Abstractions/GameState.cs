@@ -6,8 +6,7 @@ namespace Madnessnoid.Abstractions
         Loading,
         MainMenu,
         Gameplay,
-        LevelWin,
-        LevelLose,
+        LevelEnd,
         Pause,
         Exit
     }

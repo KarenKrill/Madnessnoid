@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading;
 
 using UnityEngine;
 
@@ -42,15 +43,16 @@ namespace Madnessnoid.GameStates
 
             // Speeding up scene loading by reducing the frame rate
             _initialThreadPriority = Application.backgroundLoadingPriority;
-            Application.backgroundLoadingPriority = ThreadPriority.High;
+            Application.backgroundLoadingPriority = UnityEngine.ThreadPriority.High;
 
+            var cancellationToken = Application.exitCancellationToken;
             if (prevState == GameState.Initial)
             {
-                InitialMenuSceneLoad(context).Forget();
+                InitialMenuSceneLoad(context, cancellationToken).Forget();
             }
             else
             {
-                LoadSceneAsync(context).Forget();
+                LoadSceneAsync(context, cancellationToken).Forget();
             }
         }
         public override void Exit(GameState nextState)
@@ -79,9 +81,9 @@ namespace Madnessnoid.GameStates
 
         private readonly Dictionary<string, object?> _saveSettingsData = new() { { _settingsDataKey, null } };
         private readonly Dictionary<string, Type> _loadSettingsMetadata = new() { { _settingsDataKey, typeof(GameSettings) } };
-        private ThreadPriority _initialThreadPriority;
+        private UnityEngine.ThreadPriority _initialThreadPriority;
 
-        private async UniTask InitialMenuSceneLoad(object? context)
+        private async UniTask InitialMenuSceneLoad(object? context, CancellationToken cancellationToken)
         {
             try
             {
@@ -90,8 +92,8 @@ namespace Madnessnoid.GameStates
                 await _dataStorage.InitializeAsync();
                 _contentLoaderPresenter.StageText = _dataLoadingStageText;
                 _gameSettings.SettingsChanged += OnSettingsChanged;
-                await LoadDataAsync();
-                await LoadSceneAsync(context);
+                await LoadDataAsync(cancellationToken);
+                await LoadSceneAsync(context, cancellationToken);
             }
             catch (Exception ex)
             {
@@ -99,14 +101,23 @@ namespace Madnessnoid.GameStates
                 _contentLoaderPresenter.StatusText = _failureStatusText;
             }
         }
-        private async UniTask LoadDataAsync()
+        private async UniTask LoadDataAsync(CancellationToken cancellationToken)
         {
             try
             {
                 var data = await _dataStorage.LoadAsync(_loadSettingsMetadata);
 #if !UNITY_WEBGL
-                await UniTask.SwitchToMainThread();
+                try
+                {
+                    await UniTask.SwitchToMainThread(cancellationToken);
+                }
+                catch (OperationCanceledException) { }
 #endif
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    _logger.LogWarning(nameof(LoadingStateHandler), "Data loading canceled");
+                    return;
+                }
                 if (data.TryGetValue(_settingsDataKey, out var settingsObj) && settingsObj is GameSettings settings)
                 {
                     _gameSettings.FreezeSettingsChanged = true;
@@ -131,19 +142,25 @@ namespace Madnessnoid.GameStates
                 _logger.LogError(nameof(LoadingStateHandler), $"Player data loading failed: {ex}");
             }
         }
-        private async UniTask LoadSceneAsync(object? context)
+        private async UniTask LoadSceneAsync(object? context, CancellationToken cancellationToken)
         {
             _contentLoaderPresenter.ProgressValue = 0;
             if (context is not LoadingStateContext loadingContext || loadingContext.LevelIndex < 0)
             {
                 _contentLoaderPresenter.StageText = _menuLoadingStageText;
-                await _sceneLoader.LoadAsync(_mainMenuSceneName, new SceneLoadParameters(progressAction: OnSceneLoadProgressChanged, activationRequestAction: OnActivationRequested));
+                await _sceneLoader.LoadAsync(_mainMenuSceneName,
+                    new SceneLoadParameters(progressAction: OnSceneLoadProgressChanged,
+                        activationRequestAction: OnActivationRequested),
+                    cancellationToken);
                 _stateSwitcher.TransitTo(GameState.MainMenu, null);
             }
             else
             {
                 _contentLoaderPresenter.StageText = _levelLoadingStageText;
-                await _sceneLoader.LoadAsync(_levelSceneBaseName, new SceneLoadParameters(progressAction: OnSceneLoadProgressChanged, activationRequestAction: OnActivationRequested));
+                await _sceneLoader.LoadAsync(_levelSceneBaseName,
+                    new SceneLoadParameters(progressAction: OnSceneLoadProgressChanged,
+                        activationRequestAction: OnActivationRequested),
+                    cancellationToken);
                 _stateSwitcher.TransitTo(GameState.Gameplay, new GameplayStateContext(true, loadingContext.LevelIndex));
             }
         }

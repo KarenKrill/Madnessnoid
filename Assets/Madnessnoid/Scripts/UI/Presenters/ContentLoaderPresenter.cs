@@ -32,6 +32,10 @@ namespace Madnessnoid.UI.Presenters
         protected override void Subscribe()
         {
             View.ContinueRequested += OnViewContinueRequested;
+            View.StatusText = string.Empty;
+            View.ProgressValue = 0;
+            View.EnableContinue = false;
+            View.StageText = string.Empty;
         }
         protected override void Unsubscribe()
         {

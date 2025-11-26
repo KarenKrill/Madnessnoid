@@ -18,6 +18,9 @@ namespace Madnessnoid
         [SerializeField, HideInInspector]
         private ThemeProfile _previousTheme;
 
+#if !UNITY_EDITOR
+        private void Awake() => OnValidate();
+#endif
         private void OnValidate()
         {
             if (_previousTheme != _activeTheme)

@@ -246,7 +246,7 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 15.36, y: 10.24}
+    oldSize: {x: 10.24, y: 10.24}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -1222,7 +1222,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: e51e2e6ffa562774cb5fffdf0410b83c, type: 3}
   _collisionSounds:
   - {fileID: 8300000, guid: 36ed2d1f4c4829e48836b2a2dd4cae49, type: 3}
-  _loseHitPointClip: {fileID: 8300000, guid: ee902dfaacf99ae468a80c890bc668bf, type: 3}
+  _loseHitPointClip: {fileID: 8300000, guid: 5bf2056b7700c704fb61c18fc84c0e42, type: 3}
 --- !u!60 &1260641062
 PolygonCollider2D:
   m_ObjectHideFlags: 0

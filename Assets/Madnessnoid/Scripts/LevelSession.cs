@@ -24,10 +24,6 @@ namespace Madnessnoid
 
         public void SetLevel(int levelId)
         {
-            if (LevelId == levelId)
-            {
-                return;
-            }
             if (levelId < _gameConfig.LevelsConfig.Count)
             {
                 _levelCashReward = 0;

@@ -48,6 +48,8 @@ namespace Madnessnoid
                 _touch0PressAction.started += OnTouch0PressStarted;
                 _touch0PressAction.canceled += OnTouch0PressCanceled;
                 _touch0PosAction.performed += OnTouch0PosActionPerformed;
+                _touch0PosAction.Enable();
+                _touch0PressAction.Enable();
             }
             else
             {
@@ -63,6 +65,8 @@ namespace Madnessnoid
                 _touch0PressAction.started -= OnTouch0PressStarted;
                 _touch0PressAction.canceled -= OnTouch0PressCanceled;
                 _touch0PosAction.performed -= OnTouch0PosActionPerformed;
+                _touch0PosAction.Disable();
+                _touch0PressAction.Disable();
             }
             else
             {
@@ -102,7 +106,7 @@ namespace Madnessnoid
         }
         private void OnTouch0PressStarted(InputAction.CallbackContext ctx)
         {
-            UpdateTouchDirection(ctx.ReadValue<Vector2>());
+            UpdateTouchDirection(_touch0PosAction.ReadValue<Vector2>());
             OnMoveStarted();
         }
         private void OnTouch0PosActionPerformed(InputAction.CallbackContext ctx)

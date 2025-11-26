@@ -28,8 +28,8 @@ namespace Madnessnoid
         public override void InstallBindings()
         {
             UniTaskScheduler.UnobservedTaskException += OnUnobservedTaskException;
-            Container.BindInterfacesAndSelfTo<GameConfig>().FromInstance(_gameConfig).AsSingle();
-            Container.BindInterfacesAndSelfTo<LevelSession>().FromNew().AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<GameConfig>().FromInstance(_gameConfig).AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<LevelSession>().FromNew().AsSingle();
             Container.BindInterfacesAndSelfTo<PlayerSession>().FromNew().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<ThemeProfileProvider>().FromInstance(_themeProfileProvider).AsSingle();
             Container.BindInterfacesAndSelfTo<CloudSaveDataStorage>().FromNew().AsSingle();

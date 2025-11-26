@@ -57,11 +57,14 @@ namespace Madnessnoid.UI.Views
             {
                 if (value)
                 {
-#if UNITY_ANDROID
-                    _mobileContinueAction.Enable();
-#else
-                    _continueAction.Enable();
-#endif
+                    if (Application.isMobilePlatform)
+                    {
+                        _mobileContinueAction.Enable();
+                    }
+                    else
+                    {
+                        _continueAction.Enable();
+                    }
                     if (_useStatusAnimation)
                     {
                         var color = _statusText.color;
@@ -71,11 +74,14 @@ namespace Madnessnoid.UI.Views
                 }
                 else
                 {
-#if UNITY_ANDROID
-                    _mobileContinueAction.Disable();
-#else
-                    _continueAction.Disable();
-#endif
+                    if (Application.isMobilePlatform)
+                    {
+                        _mobileContinueAction.Disable();
+                    }
+                    else
+                    {
+                        _continueAction.Disable();
+                    }
                     if (_useStatusAnimation)
                     {
                         _statusText.DOKill();
@@ -118,27 +124,36 @@ namespace Madnessnoid.UI.Views
 
         private void Awake()
         {
-#if UNITY_ANDROID
-            _mobileContinueAction.Disable();
-#else
-            _continueAction.Disable();
-#endif
+            if (Application.isMobilePlatform)
+            {
+                _mobileContinueAction.Disable();
+            }
+            else
+            {
+                _continueAction.Disable();
+            }
         }
         private void OnEnable()
         {
-#if UNITY_ANDROID
-            _mobileContinueAction.performed += OnContinueActionPerformed;
-#else
-            _continueAction.performed += OnContinueActionPerformed;
-#endif
+            if (Application.isMobilePlatform)
+            {
+                _mobileContinueAction.performed += OnContinueActionPerformed;
+            }
+            else
+            {
+                _continueAction.performed += OnContinueActionPerformed;
+            }
         }
         private void OnDisable()
         {
-#if UNITY_ANDROID
-            _mobileContinueAction.performed -= OnContinueActionPerformed;
-#else
-            _continueAction.performed -= OnContinueActionPerformed;
-#endif
+            if (Application.isMobilePlatform)
+            {
+                _mobileContinueAction.performed -= OnContinueActionPerformed;
+            }
+            else
+            {
+                _continueAction.performed -= OnContinueActionPerformed;
+            }
         }
 
         private void OnContinueActionPerformed(InputAction.CallbackContext ctx)

@@ -102,7 +102,6 @@ namespace Madnessnoid
             if ((Mathf.Abs(_rigidbody2D.angularVelocity) > _velocityEpsilon)
                 && Mathf.Abs(_rigidbody2D.angularVelocity - _angularVelocity) > float.Epsilon)
             {
-                Debug.LogWarning($"Angular velocity needs to fix it ({_rigidbody2D.angularVelocity}->{_angularVelocity})");
                 _rigidbody2D.angularVelocity = _angularVelocity;
             }
             if ((Mathf.Abs(_rigidbody2D.linearVelocityX) > _velocityEpsilon
@@ -110,7 +109,6 @@ namespace Madnessnoid
                 && Mathf.Abs(_rigidbody2D.linearVelocity.magnitude - _velocityMagnitude) > float.Epsilon)
             {
                 var targetVelocity = _rigidbody2D.linearVelocity.normalized * _velocityMagnitude;
-                Debug.LogWarning($"Velocity needs to fix it ({_rigidbody2D.linearVelocity.magnitude}->{_velocityMagnitude})");
                 _rigidbody2D.linearVelocity = targetVelocity;
             }
         }

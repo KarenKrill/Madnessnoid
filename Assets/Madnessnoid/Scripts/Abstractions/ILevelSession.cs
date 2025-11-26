@@ -28,6 +28,7 @@ namespace Madnessnoid.Abstractions
         public event LevelCompletedHandler? LevelCompleted;
 
         public void SetLevel(int levelId);
+        public void ResetLevel();
         public void BreakTheBlock(int blockId);
         public void TakeDamage();
     }

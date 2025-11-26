@@ -24,6 +24,10 @@ namespace Madnessnoid
 
         public void SetLevel(int levelId)
         {
+            if (LevelId == levelId)
+            {
+                return;
+            }
             if (levelId < _gameConfig.LevelsConfig.Count)
             {
                 _levelConfig = _gameConfig.LevelsConfig[levelId];
@@ -47,6 +51,13 @@ namespace Madnessnoid
             {
                 throw new ArgumentException(nameof(levelId), $"LevelsConfigCount({_gameConfig.LevelsConfig.Count}) < LevelId({levelId})");
             }
+        }
+        public void ResetLevel()
+        {
+            LevelId = -1;
+            HitPointsCount = 0;
+            LevelScore = 0;
+            LevelState = LevelState.None;
         }
         public void BreakTheBlock(int blockId)
         {

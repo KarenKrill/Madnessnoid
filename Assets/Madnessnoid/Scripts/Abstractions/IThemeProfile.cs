@@ -9,6 +9,8 @@ namespace Madnessnoid.Abstractions
         public ISceneBackgroundTheme MainMenuBackground { get; }
         public List<ISceneBackgroundTheme> LevelsBackground { get; }
         public Sprite HitPointIcon { get; }
+        public Sprite ScoreIcon { get; }
+        public Sprite MoneyIcon { get; }
     }
 
     public interface ISceneBackgroundTheme

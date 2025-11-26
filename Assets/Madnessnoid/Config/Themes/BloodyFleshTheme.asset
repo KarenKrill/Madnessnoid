@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: BloodyFleshTheme
   m_EditorClassIdentifier: 
   <HitPointIcon>k__BackingField: {fileID: 21300000, guid: 0e1c5d482d66b6941aafb89c3bac56a6, type: 3}
+  <ScoreIcon>k__BackingField: {fileID: 21300000, guid: 1b128927d8a4f2d4fbf01bc781f7e072, type: 3}
+  <MoneyIcon>k__BackingField: {fileID: 21300000, guid: 9cc4cdf48d8ec7a45ac359bdc4714627, type: 3}
   _mainMenuBackground:
     <Image>k__BackingField: {fileID: 21300000, guid: ee46041de83d48048a50ec3ed6c0ccfd, type: 3}
     <Music>k__BackingField: {fileID: 8300000, guid: 60427cf3d80e5c84493a23afa7c2bf36, type: 3}

@@ -119,9 +119,12 @@ namespace Madnessnoid
         }
         private void OnLevelChanged(int levelId)
         {
-            var levelConfig = _gameConfig.LevelsConfig[levelId];
-            _velocityMagnitude = levelConfig.BallVelocity;
-            _angularVelocity = levelConfig.BallAngularVelocity;
+            if (levelId >= 0)
+            {
+                var levelConfig = _gameConfig.LevelsConfig[levelId];
+                _velocityMagnitude = levelConfig.BallVelocity;
+                _angularVelocity = levelConfig.BallAngularVelocity;
+            }
         }
 
     }

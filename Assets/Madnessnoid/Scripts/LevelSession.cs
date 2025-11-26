@@ -7,7 +7,7 @@ namespace Madnessnoid
 
     public class LevelSession : ILevelSession
     {
-        public int LevelId { get; private set; }
+        public int LevelId { get; private set; } = -1;
         public int HitPointsCount { get; private set; }
         public int LevelScore { get; private set; }
         public LevelState LevelState { get; private set; }

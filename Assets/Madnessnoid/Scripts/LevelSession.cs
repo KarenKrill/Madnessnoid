@@ -30,6 +30,7 @@ namespace Madnessnoid
             }
             if (levelId < _gameConfig.LevelsConfig.Count)
             {
+                _levelCashReward = 0;
                 _levelConfig = _gameConfig.LevelsConfig[levelId];
                 _remainedBlocksCount = _levelConfig.BlocksCount;
                 _blockBreakCashReward = _levelConfig.BaseCashReward / _levelConfig.BlocksCount;
@@ -61,6 +62,7 @@ namespace Madnessnoid
             if (isLevelWon)
             {
                 LevelState = LevelState.Won;
+                _levelCashReward = 0;
             }
             try
             {
@@ -83,6 +85,7 @@ namespace Madnessnoid
                 if (isLevelLost)
                 {
                     LevelState = LevelState.Lost;
+                    _levelCashReward = 0;
                 }
                 try
                 {

@@ -21,7 +21,8 @@ namespace Madnessnoid.GameStates
             IPlayerActionsProvider playerActionsProvider,
             IInGameMenuPresenter inGameMenuPresenter,
             IThemeProfileProvider themeProfileProvider,
-            IAudioController audioController)
+            IAudioController audioController,
+            ILevelSession levelSession)
             : base(inGameMenuPresenter)
         {
             _logger = logger;
@@ -31,6 +32,7 @@ namespace Madnessnoid.GameStates
             _inGameMenuPresenter = inGameMenuPresenter;
             _themeProfileProvider = themeProfileProvider;
             _audioController = audioController;
+            _levelSession = levelSession;
         }
         public override void Enter(GameState prevState, object? context = null)
         {
@@ -39,6 +41,17 @@ namespace Madnessnoid.GameStates
             if (context is GameplayStateContext gameplayStateContext)
             {
                 _context = gameplayStateContext;
+            }
+            if (prevState == GameState.Pause && _context != null)
+            {
+                _context.IsResuming = true;
+            }
+            if ((!_context?.IsResuming) ?? true)
+            {
+                var levelIndex = _context is null ? 0 : _context.LevelIndex;
+                _levelSession.SetLevel(levelIndex);
+                _levelSession.LevelCompleted -= OnLevelCompleted;
+                _levelSession.LevelCompleted += OnLevelCompleted;
             }
             _playerActionsProvider.Pause += OnPause;
             _inGameMenuPresenter.Pause += OnPause;
@@ -54,6 +67,12 @@ namespace Madnessnoid.GameStates
             _actionsProvider.SetActionMap(ActionMap.Player);
             _logger.Log(nameof(GameplayStateHandler), nameof(Enter));
         }
+
+        private void OnLevelCompleted(LevelCompletionResult result)
+        {
+            _gameFlow.FinishLevel();
+        }
+
         public override void Exit(GameState nextState)
         {
             base.Exit(nextState);
@@ -79,6 +98,7 @@ namespace Madnessnoid.GameStates
         private readonly IInGameMenuPresenter _inGameMenuPresenter;
         private readonly IThemeProfileProvider _themeProfileProvider;
         private readonly IAudioController _audioController;
+        private readonly ILevelSession _levelSession;
         private IThemeProfile? _currThemeProfile = null;
 
         private void OnPause()

@@ -58,7 +58,6 @@ namespace Madnessnoid.UI.Views
                 if (value)
                 {
                     _continueAction.Enable();
-                    _statusText.enabled = true;
                     if (_useStatusAnimation)
                     {
                         var color = _statusText.color;
@@ -69,7 +68,6 @@ namespace Madnessnoid.UI.Views
                 else
                 {
                     _continueAction.Disable();
-                    _statusText.enabled = false;
                     if (_useStatusAnimation)
                     {
                         _statusText.DOKill();
@@ -112,7 +110,6 @@ namespace Madnessnoid.UI.Views
         private void Awake()
         {
             _continueAction.Disable();
-            _statusText.enabled = false;
         }
         private void OnEnable()
         {

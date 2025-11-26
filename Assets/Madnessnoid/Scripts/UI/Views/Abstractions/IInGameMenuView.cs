@@ -12,6 +12,8 @@ namespace Madnessnoid.UI.Views.Abstractions
     {
         public string HitPointsCountText { set; }
         public Sprite HitPointIcon { set; }
+        public string ScoreText { set; }
+        public Sprite ScoreIcon { set; }
 
         public event Action? PauseRequested;
     }

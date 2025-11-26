@@ -3,6 +3,8 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
+using TMPro;
+
 using KarenKrill.UniCore.UI.Views;
 
 namespace Madnessnoid.UI.Views
@@ -11,10 +13,17 @@ namespace Madnessnoid.UI.Views
 
     public class MainMenuView : ViewBehaviour, IMainMenuView
     {
+        public string MoneyText { set => _moneyText.text = value; }
+        public Sprite MoneyIcon { set => _moneyIcon.sprite = value; }
+
         public event Action NewGameRequested;
         public event Action SettingsOpenRequested;
         public event Action ExitRequested;
 
+        [SerializeField]
+        private TextMeshProUGUI _moneyText;
+        [SerializeField]
+        private Image _moneyIcon;
         [SerializeField]
         private Button _newGameButton;
         [SerializeField]

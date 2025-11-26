@@ -14,6 +14,8 @@ namespace Madnessnoid.UI.Views
     {
         public string HitPointsCountText { set => _hitPointsCountText.text = value; }
         public Sprite HitPointIcon { set => _hitPointImage.sprite = value; }
+        public string ScoreText { set => _scoreText.text = value; }
+        public Sprite ScoreIcon { set => _scoreImage.sprite = value; }
 
         public event Action PauseRequested;
 
@@ -21,6 +23,10 @@ namespace Madnessnoid.UI.Views
         private TextMeshProUGUI _hitPointsCountText;
         [SerializeField]
         private Image _hitPointImage;
+        [SerializeField]
+        private TextMeshProUGUI _scoreText;
+        [SerializeField]
+        private Image _scoreImage;
         [SerializeField]
         private Button _pauseButton;
 

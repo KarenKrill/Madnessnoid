@@ -5,9 +5,10 @@
         GameState State { get; }
 
         void LoadMainMenu();
-        void StartLevel(int index);
+        void StartLevel(int levelId);
         void PauseLevel();
         void ResumeLevel();
+        void FinishLevel();
         void Exit();
     }
 }

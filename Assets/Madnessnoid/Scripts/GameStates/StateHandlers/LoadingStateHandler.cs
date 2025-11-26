@@ -24,6 +24,7 @@ namespace Madnessnoid.GameStates
         public LoadingStateHandler(ILogger logger,
             IStateSwitcher<GameState> stateSwitcher,
             GameSettings gameSettings,
+            IPlayerSession playerSession,
             IContentLoaderPresenter contentLoaderPresenter,
             IDataStorage dataStorage,
             ISceneLoader sceneLoader) : base(contentLoaderPresenter)
@@ -31,7 +32,9 @@ namespace Madnessnoid.GameStates
             _logger = logger;
             _stateSwitcher = stateSwitcher;
             _gameSettings = gameSettings;
+            _playerSession = playerSession;
             _saveSettingsData[_settingsDataKey] = _gameSettings;
+            _savePlayerSessionData[_playerSessionDataKey] = _playerSessionData;
             _contentLoaderPresenter = contentLoaderPresenter;
             _dataStorage = dataStorage;
             _sceneLoader = sceneLoader;
@@ -63,6 +66,7 @@ namespace Madnessnoid.GameStates
         }
 
         private static readonly string _settingsDataKey = "Settings";
+        private static readonly string _playerSessionDataKey = "PlayerSession";
         private static readonly string _mainMenuSceneName = "MainMenuScene";
         private static readonly string _levelSceneBaseName = "LevelSceneBase";
         private static readonly string _connectingToServerStageText = "Connecting to the server...";
@@ -75,13 +79,18 @@ namespace Madnessnoid.GameStates
         private readonly ILogger _logger;
         private readonly IStateSwitcher<GameState> _stateSwitcher;
         private readonly GameSettings _gameSettings;
+        private readonly IPlayerSession _playerSession;
         private readonly IContentLoaderPresenter _contentLoaderPresenter;
         private readonly IDataStorage _dataStorage;
         private readonly ISceneLoader _sceneLoader;
 
         private readonly Dictionary<string, object?> _saveSettingsData = new() { { _settingsDataKey, null } };
         private readonly Dictionary<string, Type> _loadSettingsMetadata = new() { { _settingsDataKey, typeof(GameSettings) } };
+        private readonly Dictionary<string, object?> _savePlayerSessionData = new() { { _playerSessionDataKey, null } };
+        private readonly Dictionary<string, Type> _loadPlayerSessionMetadata = new() { { _playerSessionDataKey, typeof(PlayerSessionData) } };
+        private readonly PlayerSessionData _playerSessionData = new();
         private UnityEngine.ThreadPriority _initialThreadPriority;
+        private bool _isInternalChange = false;
 
         private async UniTask InitialMenuSceneLoad(object? context, CancellationToken cancellationToken)
         {
@@ -92,7 +101,9 @@ namespace Madnessnoid.GameStates
                 await _dataStorage.InitializeAsync();
                 _contentLoaderPresenter.StageText = _dataLoadingStageText;
                 _gameSettings.SettingsChanged += OnSettingsChanged;
+                _playerSession.MoneyChanged += OnPlayerSessionMoneyChanged;
                 await LoadDataAsync(cancellationToken);
+                await LoadPlayerSessionDataAsync(cancellationToken);
                 await LoadSceneAsync(context, cancellationToken);
             }
             catch (Exception ex)
@@ -142,6 +153,45 @@ namespace Madnessnoid.GameStates
                 _logger.LogError(nameof(LoadingStateHandler), $"Player data loading failed: {ex}");
             }
         }
+        private async UniTask LoadPlayerSessionDataAsync(CancellationToken cancellationToken)
+        {
+            try
+            {
+                var data = await _dataStorage.LoadAsync(_loadPlayerSessionMetadata);
+#if !UNITY_WEBGL
+                try
+                {
+                    await UniTask.SwitchToMainThread(cancellationToken);
+                }
+                catch (OperationCanceledException) { }
+#endif
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    _logger.LogWarning(nameof(LoadingStateHandler), "Player session data loading canceled");
+                    return;
+                }
+                if (data.TryGetValue(_playerSessionDataKey, out var playerSessionDataObj) && playerSessionDataObj is PlayerSessionData playerSessionData)
+                {
+                    _isInternalChange = true;
+                    try
+                    {
+                        _playerSession.AddMoney(playerSessionData.Money);
+                    }
+                    finally
+                    {
+                        _isInternalChange = false;
+                    }
+                }
+                else
+                {
+                    _logger.LogWarning(nameof(LoadingStateHandler), $"No saved \"{_playerSessionDataKey}\" data key");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(nameof(LoadingStateHandler), $"Player data loading failed: {ex}");
+            }
+        }
         private async UniTask LoadSceneAsync(object? context, CancellationToken cancellationToken)
         {
             _contentLoaderPresenter.ProgressValue = 0;
@@ -161,13 +211,21 @@ namespace Madnessnoid.GameStates
                     new SceneLoadParameters(progressAction: OnSceneLoadProgressChanged,
                         activationRequestAction: OnActivationRequested),
                     cancellationToken);
-                _stateSwitcher.TransitTo(GameState.Gameplay, new GameplayStateContext(true, loadingContext.LevelIndex));
+                _stateSwitcher.TransitTo(GameState.Gameplay, new GameplayStateContext(false, loadingContext.LevelIndex));
             }
         }
 
         private void OnSettingsChanged()
         {
             _dataStorage.SaveAsync(_saveSettingsData).AsUniTask().Forget();
+        }
+        private void OnPlayerSessionMoneyChanged()
+        {
+            _playerSessionData.Money = _playerSession.Money;
+            if (!_isInternalChange)
+            {
+                _dataStorage.SaveAsync(_savePlayerSessionData).AsUniTask().Forget();
+            }
         }
         private void OnSceneLoadProgressChanged(float progress)
         {
@@ -185,6 +243,13 @@ namespace Madnessnoid.GameStates
             _contentLoaderPresenter.Continue += OnContentLoaderPresenterContinue;
             _contentLoaderPresenter.StatusText = _successStatusText;
             _contentLoaderPresenter.EnableContinue = true;
+        }
+
+        [Serializable]
+        private class PlayerSessionData
+        {
+            [field: SerializeField]
+            public int Money { get; set; } = 0;
         }
     }
 }

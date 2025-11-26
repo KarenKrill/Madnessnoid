@@ -11,6 +11,8 @@ namespace Madnessnoid.Abstractions
     {
         public int BlocksCount { get; }
         public int HitPointsCount { get; }
+        public int BallVelocity { get; }
+        public int BallAngularVelocity { get; }
         public int BaseCashReward { get; }
         public int HitPointCashRewardBonus { get; }
     }

@@ -30,15 +30,21 @@ namespace Madnessnoid
     public class LevelConfig : ILevelConfig
     {
         [field: SerializeField]
-        public int BlocksCount { get; private set; }
+        public int BlocksCount { get; private set; } = 16;
 
         [field: SerializeField]
-        public int HitPointsCount { get; private set; }
+        public int HitPointsCount { get; private set; } = 3;
 
         [field: SerializeField]
-        public int BaseCashReward { get; private set; }
+        public int BallVelocity { get; private set; } = 5;
+        
+        [field: SerializeField]
+        public int BallAngularVelocity { get; private set; } = 120;
 
         [field: SerializeField]
-        public int HitPointCashRewardBonus { get; private set; }
+        public int BaseCashReward { get; private set; } = 100;
+
+        [field: SerializeField]
+        public int HitPointCashRewardBonus { get; private set; } = 10;
     }
 }

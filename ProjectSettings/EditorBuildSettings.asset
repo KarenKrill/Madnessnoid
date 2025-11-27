@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Madnessnoid/Scenes/BootScene.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
   - enabled: 1
+    path: Assets/Madnessnoid/Scenes/LoadingScene.unity
+    guid: fbf2661a3e6bc1746929500847224b0e
+  - enabled: 1
     path: Assets/Madnessnoid/Scenes/MainMenuScene.unity
     guid: dd12768ff7f554341b94747c72ec02f9
   - enabled: 1

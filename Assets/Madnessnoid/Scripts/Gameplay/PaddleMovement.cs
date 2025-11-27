@@ -110,19 +110,7 @@ namespace Madnessnoid
         {
             return _touchPosition < (paddlePos.x - _paddleSize.x / 2);
         }
-        Vector2 GetRendererWorldSize(SpriteRenderer sr)
-        {
-            var sprite = sr.sprite;
-            if (sr.drawMode == SpriteDrawMode.Simple)
-            {
-                Vector2 spriteSize = sprite.rect.size / sprite.pixelsPerUnit;
-                return Vector2.Scale(spriteSize, sr.transform.lossyScale);
-            }
-            else
-            {
-                return Vector2.Scale(sr.size, sr.transform.lossyScale);
-            }
-        }
+        Vector2 GetRendererWorldSize(SpriteRenderer sr) => Vector2.Scale(sr.size, sr.transform.lossyScale);
         private void UpdateTouchDirection(Vector2 touchPos)
         {
             var pos = ScreenToWorld2D(touchPos);

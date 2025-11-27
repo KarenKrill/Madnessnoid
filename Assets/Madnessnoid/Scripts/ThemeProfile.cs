@@ -24,6 +24,9 @@ namespace Madnessnoid
         [SerializeField]
         private List<SceneBackgroundTheme> _levelsBackground;
 
+#if !UNITY_EDITOR
+        private void Awake() => OnValidate();
+#endif
         private void OnValidate()
         {
             LevelsBackground.Clear();

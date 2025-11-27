@@ -16,6 +16,9 @@ namespace Madnessnoid
         private List<LevelConfig> _levelsConfig;
         private readonly List<ILevelConfig> _levelsConfigList = new();
 
+#if !UNITY_EDITOR
+        private void Awake() => OnValidate();
+#endif
         private void OnValidate()
         {
             _levelsConfigList.Clear();

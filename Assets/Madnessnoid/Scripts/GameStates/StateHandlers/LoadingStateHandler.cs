@@ -49,14 +49,17 @@ namespace Madnessnoid.GameStates
             Application.backgroundLoadingPriority = UnityEngine.ThreadPriority.High;
 
             var cancellationToken = Application.exitCancellationToken;
-            if (prevState == GameState.Initial)
+            LoadLoadingSceneAsync(cancellationToken).ContinueWith(() =>
             {
-                InitialMenuSceneLoad(context, cancellationToken).Forget();
-            }
-            else
-            {
-                LoadSceneAsync(context, cancellationToken).Forget();
-            }
+                if (prevState == GameState.Initial)
+                {
+                    InitialMenuSceneLoad(context, cancellationToken).Forget();
+                }
+                else
+                {
+                    LoadSceneAsync(context, cancellationToken).Forget();
+                }
+            }).Forget();
         }
         public override void Exit(GameState nextState)
         {
@@ -67,6 +70,7 @@ namespace Madnessnoid.GameStates
 
         private static readonly string _settingsDataKey = "Settings";
         private static readonly string _playerSessionDataKey = "PlayerSession";
+        private static readonly string _loadingSceneName = "LoadingScene";
         private static readonly string _mainMenuSceneName = "MainMenuScene";
         private static readonly string _levelSceneBaseName = "LevelSceneBase";
         private static readonly string _connectingToServerStageText = "Connecting to the server...";
@@ -191,6 +195,10 @@ namespace Madnessnoid.GameStates
             {
                 _logger.LogError(nameof(LoadingStateHandler), $"Player data loading failed: {ex}");
             }
+        }
+        private async UniTask LoadLoadingSceneAsync(CancellationToken cancellationToken)
+        {
+            await _sceneLoader.LoadAsync(_loadingSceneName, cancellationToken: cancellationToken);
         }
         private async UniTask LoadSceneAsync(object? context, CancellationToken cancellationToken)
         {

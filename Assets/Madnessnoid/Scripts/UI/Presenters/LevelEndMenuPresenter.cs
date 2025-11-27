@@ -72,7 +72,11 @@ namespace Madnessnoid.UI.Presenters
                     View.EnableContinue = false;
                 }
                 View.EnableReward = true;
-                View.CashRewardText = $"Reward: +{_levelSession.LevelScore}";
+                if (_levelSession.LevelId >= 0)
+                {
+                    var levelConfig = _gameConfig.LevelsConfig[_levelSession.LevelId];
+                    View.CashRewardText = $"Reward: +{levelConfig.BaseCashReward + levelConfig.HitPointCashRewardBonus * _levelSession.HitPointsCount}";
+                }
                 OnActiveThemeChanged();
             }
             else

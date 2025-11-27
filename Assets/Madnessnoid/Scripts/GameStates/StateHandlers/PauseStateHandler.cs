@@ -18,6 +18,7 @@ namespace Madnessnoid.GameStates
         public PauseStateHandler(ILogger logger,
             IGameFlow gameFlow,
             IStateSwitcher<GameState> stateSwitcher,
+            ILevelSession levelSession,
             IBasicActionsProvider actionsProvider,
             IUIActionsProvider uiActionsProvider,
             IPauseMenuPresenter pauseMenuPresenter)
@@ -25,6 +26,7 @@ namespace Madnessnoid.GameStates
         {
             _logger = logger;
             _gameFlow = gameFlow;
+            _levelSession = levelSession;
             _stateSwitcher = stateSwitcher;
             _actionsProvider = actionsProvider;
             _uiActionsProvider = uiActionsProvider;
@@ -40,6 +42,7 @@ namespace Madnessnoid.GameStates
             _logger.Log(nameof(PauseStateHandler), nameof(Enter));
             _uiActionsProvider.Cancel += OnResumeRequested;
             _pauseMenuPresenter.Resume += OnResumeRequested;
+            _pauseMenuPresenter.Restart += OnRestartRequested;
             _pauseMenuPresenter.MainMenu += OnMainMenu;
             _pauseMenuPresenter.Exit += OnExit;
             _actionsProvider.SetActionMap(ActionMap.UI);
@@ -49,6 +52,7 @@ namespace Madnessnoid.GameStates
             _logger.Log(nameof(PauseStateHandler), nameof(Exit));
             _uiActionsProvider.Cancel -= OnResumeRequested;
             _pauseMenuPresenter.Resume -= OnResumeRequested;
+            _pauseMenuPresenter.Restart -= OnRestartRequested;
             _pauseMenuPresenter.MainMenu -= OnMainMenu;
             _pauseMenuPresenter.Exit -= OnExit;
             Time.timeScale = _previousTimeScale;
@@ -57,6 +61,7 @@ namespace Madnessnoid.GameStates
 
         private readonly ILogger _logger;
         private readonly IGameFlow _gameFlow;
+        private readonly ILevelSession _levelSession;
         private readonly IStateSwitcher<GameState> _stateSwitcher;
         private GameState _previousState;
         private readonly IBasicActionsProvider _actionsProvider;
@@ -67,6 +72,10 @@ namespace Madnessnoid.GameStates
         private void OnResumeRequested()
         {
             _stateSwitcher.TransitTo(_previousState);
+        }
+        private void OnRestartRequested()
+        {
+            _gameFlow.StartLevel(_levelSession.LevelId);
         }
         private void OnMainMenu() => _gameFlow.LoadMainMenu();
         private void OnExit() => _gameFlow.Exit();

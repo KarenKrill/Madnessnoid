@@ -479,10 +479,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4700934778586178033}
     m_Modifications:
-    - target: {fileID: 4850374770277368123, guid: 861471cbe16147946bcfc3f2caa13426, type: 3}
-      propertyPath: m_Interactable
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4937381779553626878, guid: 861471cbe16147946bcfc3f2caa13426, type: 3}
       propertyPath: m_Name
       value: RestartButton

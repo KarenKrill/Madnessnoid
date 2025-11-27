@@ -57,7 +57,14 @@ namespace Madnessnoid.UI.Views
             {
                 if (value)
                 {
-                    _continueAction.Enable();
+                    if (Application.isMobilePlatform)
+                    {
+                        _mobileContinueAction.Enable();
+                    }
+                    else
+                    {
+                        _continueAction.Enable();
+                    }
                     if (_useStatusAnimation)
                     {
                         var color = _statusText.color;
@@ -67,7 +74,14 @@ namespace Madnessnoid.UI.Views
                 }
                 else
                 {
-                    _continueAction.Disable();
+                    if (Application.isMobilePlatform)
+                    {
+                        _mobileContinueAction.Disable();
+                    }
+                    else
+                    {
+                        _continueAction.Disable();
+                    }
                     if (_useStatusAnimation)
                     {
                         _statusText.DOKill();
@@ -105,19 +119,41 @@ namespace Madnessnoid.UI.Views
 
         [SerializeField]
         private InputAction _continueAction = new("AnyKey", InputActionType.PassThrough, binding: "*/<Button>");
+        private InputAction _mobileContinueAction = new("AnyTouch", InputActionType.Button, binding: "<Touchscreen>/touch0/press");
         private float _progressValue = 0;
 
         private void Awake()
         {
-            _continueAction.Disable();
+            if (Application.isMobilePlatform)
+            {
+                _mobileContinueAction.Disable();
+            }
+            else
+            {
+                _continueAction.Disable();
+            }
         }
         private void OnEnable()
         {
-            _continueAction.performed += OnContinueActionPerformed;
+            if (Application.isMobilePlatform)
+            {
+                _mobileContinueAction.performed += OnContinueActionPerformed;
+            }
+            else
+            {
+                _continueAction.performed += OnContinueActionPerformed;
+            }
         }
         private void OnDisable()
         {
-            _continueAction.performed -= OnContinueActionPerformed;
+            if (Application.isMobilePlatform)
+            {
+                _mobileContinueAction.performed -= OnContinueActionPerformed;
+            }
+            else
+            {
+                _continueAction.performed -= OnContinueActionPerformed;
+            }
         }
 
         private void OnContinueActionPerformed(InputAction.CallbackContext ctx)

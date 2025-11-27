@@ -33,8 +33,11 @@ namespace Madnessnoid
 
         private void UpdateBackground()
         {
-            var background = _themeProfileProvider.ActiveTheme.LevelsBackground[_levelSession.LevelId].Image;
-            _levelBackground.sprite = background;
+            if (_levelSession.LevelId >= 0)
+            {
+                var background = _themeProfileProvider.ActiveTheme.LevelsBackground[_levelSession.LevelId].Image;
+                _levelBackground.sprite = background;
+            }
         }
         private void OnActiveThemeChanged() => UpdateBackground();
         private void OnLevelChanged(int levelId) => UpdateBackground();

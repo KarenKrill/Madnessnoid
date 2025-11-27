@@ -38,7 +38,7 @@ namespace Madnessnoid.UI.Presenters
             View.PauseRequested -= OnPause;
             _themeProfileProvider.ActiveThemeChanged -= OnActiveThemeChanged;
             _levelSession.HitPointsCountChanged -= OnHitPointsCountChanged;
-            _levelSession.LevelScoreChanged += OnLevelScoreChanged;
+            _levelSession.LevelScoreChanged -= OnLevelScoreChanged;
         }
         
         private readonly IThemeProfileProvider _themeProfileProvider;

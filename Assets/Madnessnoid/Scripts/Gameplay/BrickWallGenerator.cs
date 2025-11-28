@@ -53,7 +53,7 @@ public class BrickWallGenerator : MonoBehaviour
         GenerateLevelInternal(blocksCount);
     }
 
-    public static Vector2[] LayoutElements(
+    private static Vector2[] LayoutElements(
         int count,
         Vector2 elementSize,
         Rect minBounds,
@@ -61,75 +61,53 @@ public class BrickWallGenerator : MonoBehaviour
         Vector2 maxOffset,
         out Rect bounds)
     {
-        // ---------------------------
-        // 1. Интерполяция bounds
-        // ---------------------------
+        // 1. Bounds interpolation
 
-        // T = насколько много элементов (0 → минимальный bounds, 1 → максимальный)
-        float t = Mathf.InverseLerp(1, 50, count);
-        // Можно параметризовать: сейчас 1 элемент → minBounds, 50+ → maxBounds
+        // 0 → min bounds, 1 → max bounds
+        float itemsCountWeight = Mathf.InverseLerp(1, 50, count);
+        bounds = LerpRect(minBounds, maxBounds, itemsCountWeight);
 
-        bounds = LerpRect(minBounds, maxBounds, t);
+        // 2. Calculating the number of columns and rows
 
-        // ---------------------------
-        // 2. Вычисление количества колонок и строк
-        // ---------------------------
+        int maxColumnsCount = Mathf.FloorToInt(bounds.width / (elementSize.x + maxOffset.x));
+        maxColumnsCount = Mathf.Max(1, maxColumnsCount);
+        int columnsCount = Mathf.Min(count, maxColumnsCount);
+        int rowsCount = Mathf.CeilToInt(count / (float)columnsCount);
 
-        // Максимум элементов в строке по ширине:
-        int maxColumns = Mathf.FloorToInt(bounds.width / (elementSize.x + maxOffset.x));
-        maxColumns = Mathf.Max(1, maxColumns);
-
-        // Реальные колонки — не больше count
-        int columns = Mathf.Min(count, maxColumns);
-
-        // Строки:
-        int rows = Mathf.CeilToInt(count / (float)columns);
-
-        // ---------------------------
-        // 3. Расчёт итогового spacing (по факту может быть меньше maxOffset)
-        // ---------------------------
+        // 3. Calculation of the final spacing (in fact, it may be less than maxOffset)
 
         float spacingX = Mathf.Min(
-            (bounds.width - columns * elementSize.x) / Mathf.Max(1, columns - 1),
+            (bounds.width - columnsCount * elementSize.x) / Mathf.Max(1, columnsCount - 1),
             maxOffset.x
         );
-
         float spacingY = Mathf.Min(
-            (bounds.height - rows * elementSize.y) / Mathf.Max(1, rows - 1),
+            (bounds.height - rowsCount * elementSize.y) / Mathf.Max(1, rowsCount - 1),
             maxOffset.y
         );
-
-        // Если элементов мало — spacing может быть отрицательным → ставим 0
+        // If there are few elements, spacing can be negative → set to 0
         spacingX = Mathf.Max(0, spacingX);
         spacingY = Mathf.Max(0, spacingY);
 
-        // ---------------------------
-        // 4. Центр глобального грида внутри bounds
-        // ---------------------------
+        // 4. The center of the global grid is inside bounds
 
-        float totalWidth = columns * elementSize.x + (columns - 1) * spacingX;
-        float totalHeight = rows * elementSize.y + (rows - 1) * spacingY;
-
+        float totalWidth = columnsCount * elementSize.x + (columnsCount - 1) * spacingX;
+        float totalHeight = rowsCount * elementSize.y + (rowsCount - 1) * spacingY;
         float startX = bounds.center.x - totalWidth / 2f;
-        float startY = bounds.center.y + totalHeight / 2f; // сверху вниз
+        float startY = bounds.center.y + totalHeight / 2f; // top down
 
-        // ---------------------------
-        // 5. Раскладка элементов
-        // ---------------------------
+        // 5. Layout of elements
 
         Vector2[] positions = new Vector2[count];
-
         for (int i = 0; i < count; i++)
         {
-            int row = i / columns;
-            int col = i % columns;
+            int row = i / columnsCount;
+            int col = i % columnsCount;
 
             float x = startX + col * (elementSize.x + spacingX) + elementSize.x / 2f;
             float y = startY - row * (elementSize.y + spacingY) - elementSize.y / 2f;
 
             positions[i] = new Vector2(x, y);
         }
-
         return positions;
     }
 

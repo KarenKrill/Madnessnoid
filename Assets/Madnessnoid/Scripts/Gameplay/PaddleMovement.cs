@@ -121,7 +121,7 @@ namespace Madnessnoid
         private Vector3 ScreenToWorld2D(Vector2 touchPos)
         {
             var rect = _camera.pixelRect;
-            // поправка на letterbox или другие искажения экрана
+            // Correction for LetterBox or other screen distortions
             touchPos.x = Mathf.Clamp(touchPos.x - rect.x, 0, rect.width);
             touchPos.y = Mathf.Clamp(touchPos.y - rect.y, 0, rect.height);
             float distance = _camera.orthographic ? Mathf.Abs(_camera.transform.position.z) : 0;

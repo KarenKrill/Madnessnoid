@@ -52,6 +52,10 @@ namespace Madnessnoid.UI.Presenters
         private static readonly string _gameWinText = "You are a winner!";
         private static readonly string _levelWinText = "Level completed!";
         private static readonly string _levelLoseText = "You are a loser!";
+        // Light orange color
+        private static readonly Color _wonTitleTextColor = new(1, (float)0xAC / 0xFF, (float)0x40 / 0xFF, 1);
+        // Orange red color
+        private static readonly Color _lostTitleTextColor = new((float)0xE1 / 0xFF, (float)0x24 / 0xFF, 0);
 
         private readonly IGameConfig _gameConfig;
         private readonly ILevelSession _levelSession;
@@ -61,7 +65,7 @@ namespace Madnessnoid.UI.Presenters
         {
             if (_levelSession.LevelState == LevelState.Won)
             {
-                View.TitleTextColor = new Color(1, (float)0xAC / 0xFF, (float)0x40 / 0xFF, 1);
+                View.TitleTextColor = _wonTitleTextColor;
                 if (_levelSession.LevelId < _gameConfig.LevelsConfig.Count - 1)
                 {
                     View.TitleText = _levelWinText;
@@ -83,7 +87,7 @@ namespace Madnessnoid.UI.Presenters
             else
             {
                 View.TitleText = _levelLoseText;
-                View.TitleTextColor = new Color((float)0xE1 / 0xFF, (float)0x24 / 0xFF, 0);
+                View.TitleTextColor = _lostTitleTextColor;
                 View.EnableContinue = false;
                 View.EnableReward = false;
             }
@@ -101,6 +105,5 @@ namespace Madnessnoid.UI.Presenters
         {
             View.CashRewardIcon = _themeProfileProvider.ActiveTheme.MoneyIcon;
         }
-
     }
 }

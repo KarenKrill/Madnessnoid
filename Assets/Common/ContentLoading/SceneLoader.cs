@@ -24,6 +24,8 @@ namespace KarenKrill.ContentLoading
             CancellationToken cancellationToken = default)
             => await LoadUniAsync(sceneBuildIndex, loadParameters ?? SceneLoadParameters.Default, cancellationToken).AsTask();
 
+        private const float _MaxDelayedActivationSceneLoadingProgress = 0.9f;
+
         private async UniTask LoadUniAsync(string sceneName, SceneLoadParameters loadParameters, CancellationToken cancellationToken)
         {
             var asyncOperation = SceneManager.LoadSceneAsync(sceneName, loadParameters.mode);
@@ -64,13 +66,14 @@ namespace KarenKrill.ContentLoading
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void OnProgressChanged(FrozableProgress<float> progress, float progressValue,
+        private void OnProgressChanged(FrozableProgress<float> progress,
+            float progressValue,
             AsyncOperation asyncOperation,
             Action<float> progressAction,
             ActivationRequestHandler activationRequestAction)
         {
-            progressAction?.Invoke(progressValue / 0.9f);
-            if (progressValue >= 0.9f)
+            progressAction?.Invoke(progressValue / _MaxDelayedActivationSceneLoadingProgress);
+            if (progressValue >= _MaxDelayedActivationSceneLoadingProgress)
             { // Scene is loaded and waiting to be activated
                 // Freeze the progress change while waiting for the scene to activate,
                 // since the AsyncOperation UniTask wrapper doesn't handle this situation and continues to raise events

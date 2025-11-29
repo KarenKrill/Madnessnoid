@@ -83,18 +83,22 @@ namespace Madnessnoid
         [SerializeField]
         private AudioSource _sfxSource;
 
+        private const float _MaxDecibelsVolume = -80f;
+        private const float _MinLinearVolume = 0.0001f;
+        private const float _LinearToDecibelsCoefficient = 20f;
+
         private float VolumeToDecibels(float volume)
         {
-            if (volume <= 0.0001f)
+            if (volume <= _MinLinearVolume)
             {
-                return -80f; // Minimum volume in decibels
+                return _MaxDecibelsVolume; // Minimum volume in decibels
             }
-            return 20f * Mathf.Log10(volume);
+            return _LinearToDecibelsCoefficient * Mathf.Log10(volume);
         }
 
         private float DecibelsToVolume(float decibels)
         {
-            return Mathf.Pow(10f, decibels / 20f);
+            return Mathf.Pow(10, decibels / _LinearToDecibelsCoefficient);
         }
     }
 }

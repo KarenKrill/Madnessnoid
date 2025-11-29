@@ -28,6 +28,7 @@ namespace Madnessnoid
 
         private ILevelSession _levelSession;
         private IGameConfig _gameConfig;
+        private const int _ElementsCountForMaxBoundsUsage = 50;
 
         private void OnEnable()
         {
@@ -73,7 +74,7 @@ namespace Madnessnoid
             // 1. Bounds interpolation
 
             // 0 → min bounds, 1 → max bounds
-            float itemsCountWeight = Mathf.InverseLerp(1, 50, count);
+            float itemsCountWeight = Mathf.InverseLerp(1, _ElementsCountForMaxBoundsUsage, count);
             bounds = LerpRect(minBounds, maxBounds, itemsCountWeight);
 
             // 2. Calculating the number of columns and rows

@@ -4,11 +4,11 @@ using KarenKrill.UniCore.UI.Presenters.Abstractions;
 using KarenKrill.UniCore.UI.Views.Abstractions;
 
 using Madnessnoid.Abstractions;
+using Madnessnoid.UI.Views.Abstractions;
 
 namespace Madnessnoid.UI.Presenters
 {
     using Abstractions;
-    using Views.Abstractions;
 
     public class InGameMenuPresenter : PresenterBase<IInGameMenuView>, IInGameMenuPresenter, IPresenter<IInGameMenuView>
     {

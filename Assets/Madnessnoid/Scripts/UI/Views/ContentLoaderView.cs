@@ -3,8 +3,8 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
-
 using TMPro;
+
 using DG.Tweening;
 
 using KarenKrill.UniCore.UI.Views;

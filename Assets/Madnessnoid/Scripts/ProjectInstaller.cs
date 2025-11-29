@@ -1,8 +1,11 @@
 using System.Collections.Generic;
+
 using UnityEngine;
 using UnityEngine.UI;
-using Zenject;
 
+using Zenject;
+using Cysharp.Threading.Tasks;
+    
 using KarenKrill.UniCore.Diagnostics;
 using KarenKrill.UniCore.Interactions;
 using KarenKrill.UniCore.Logging;
@@ -19,7 +22,6 @@ using KarenKrill.DataStorage;
 namespace Madnessnoid
 {
     using Abstractions;
-    using Cysharp.Threading.Tasks;
     using GameStates;
     using Input;
 

@@ -1,7 +1,9 @@
-using UnityEngine;
-using TMPro;
-using UnityEngine.UI;
 using System;
+
+using UnityEngine;
+using UnityEngine.UI;
+
+using TMPro;
 
 namespace Madnessnoid
 {

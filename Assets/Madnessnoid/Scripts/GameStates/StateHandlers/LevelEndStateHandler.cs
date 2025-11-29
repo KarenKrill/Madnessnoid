@@ -5,11 +5,11 @@ using UnityEngine;
 using KarenKrill.UniCore.Input.Abstractions;
 using KarenKrill.UniCore.StateSystem.Abstractions;
 
+using Madnessnoid.Abstractions;
+using Madnessnoid.UI.Presenters.Abstractions;
+
 namespace Madnessnoid.GameStates
 {
-    using Abstractions;
-    using UI.Presenters.Abstractions;
-
     public class LevelEndStateHandler : PresentableStateHandlerBase<GameState>, IStateHandler<GameState>
     {
         public override GameState State => GameState.LevelEnd;

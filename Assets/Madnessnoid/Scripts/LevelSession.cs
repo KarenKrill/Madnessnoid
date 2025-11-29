@@ -1,10 +1,10 @@
 using System;
+using UnityEngine;
 
 namespace Madnessnoid
 {
     using Abstractions;
-    using UnityEngine;
-
+    
     public class LevelSession : ILevelSession
     {
         public int LevelId { get; private set; } = -1;

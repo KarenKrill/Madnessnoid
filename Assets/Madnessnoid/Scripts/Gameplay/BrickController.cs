@@ -1,5 +1,8 @@
 using UnityEngine;
 
-public class BrickController : MonoBehaviour
+namespace Madnessnoid
 {
+    public class BrickController : MonoBehaviour
+    {
+    }
 }

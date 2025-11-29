@@ -1,9 +1,11 @@
-using Madnessnoid.Abstractions;
 using UnityEngine;
+
 using Zenject;
 
 namespace Madnessnoid
 {
+    using Abstractions;
+
     public class LevelController : MonoBehaviour
     {
         [Inject]

@@ -1,9 +1,9 @@
 ﻿using KarenKrill.UniCore.StateSystem.Abstractions;
 
+using Madnessnoid.Abstractions;
+
 namespace Madnessnoid.GameStates
 {
-    using Abstractions;
-
     public class GameFlow : IGameFlow
     {
         public GameState State => _stateSwitcher.State;

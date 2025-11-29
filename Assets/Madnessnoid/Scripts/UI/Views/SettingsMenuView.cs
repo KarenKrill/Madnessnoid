@@ -27,10 +27,8 @@ namespace Madnessnoid.UI.Views
 
         #endregion
 
-#nullable enable
-        public event Action? ApplyRequested;
-        public event Action? CancelRequested;
-#nullable restore
+        public event Action ApplyRequested;
+        public event Action CancelRequested;
 
         [SerializeField]
         private Toggle _showFpsToggle;

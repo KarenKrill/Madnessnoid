@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 
 using UnityEngine;
 
@@ -69,7 +71,7 @@ namespace Madnessnoid.Abstractions
 
         #endregion
 
-#nullable enable
+
 
         public event Action<QualityLevel>? QualityLevelChanged;
 
@@ -78,8 +80,6 @@ namespace Madnessnoid.Abstractions
         public event Action<bool>? ShowFpsChanged;
 
         public event Action? SettingsChanged;
-
-#nullable restore
 
         public GameSettings(QualityLevel qualityLevel = QualityLevel.High, float musicVolume = 0, bool showFps = false)
         {

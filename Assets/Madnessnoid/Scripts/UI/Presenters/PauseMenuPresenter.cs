@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 
 using KarenKrill.UniCore.UI.Presenters.Abstractions;
 using KarenKrill.UniCore.UI.Views.Abstractions;
@@ -12,12 +14,10 @@ namespace Madnessnoid.UI.Presenters
 
     public class PauseMenuPresenter : PresenterBase<IPauseMenuView>, IPauseMenuPresenter, IPresenter<IPauseMenuView>
     {
-#nullable enable
         public event Action? Resume;
         public event Action? Restart;
         public event Action? MainMenu;
         public event Action? Exit;
-#nullable restore
 
         public PauseMenuPresenter(IViewFactory viewFactory,
             IPresenterNavigator navigator,

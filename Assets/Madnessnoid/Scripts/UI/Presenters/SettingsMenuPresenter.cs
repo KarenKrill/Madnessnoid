@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 
 using KarenKrill.UniCore.UI.Presenters.Abstractions;
 using KarenKrill.UniCore.UI.Views.Abstractions;
@@ -12,9 +14,7 @@ namespace Madnessnoid.UI.Presenters
 
     public class SettingsMenuPresenter : PresenterBase<ISettingsMenuView>, ISettingsMenuPresenter, IPresenter<ISettingsMenuView>
     {
-#nullable enable
         public event Action? Close;
-#nullable restore
 
         public SettingsMenuPresenter(IViewFactory viewFactory,
             IPresenterNavigator navigator,

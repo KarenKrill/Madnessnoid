@@ -91,7 +91,7 @@ namespace Madnessnoid
                 }
                 finally
                 {
-                    if(isLevelLost)
+                    if (isLevelLost)
                     {
                         LevelCompleted?.Invoke(new(HitPointsCount));
                     }

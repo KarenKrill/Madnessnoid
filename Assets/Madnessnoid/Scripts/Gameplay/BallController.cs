@@ -107,7 +107,7 @@ namespace Madnessnoid
 
         private void FixedUpdate()
         {
-            if ((Mathf.Abs(_rigidbody2D.angularVelocity) > _velocityEpsilon)
+            if (Mathf.Abs(_rigidbody2D.angularVelocity) > _velocityEpsilon
                 && Mathf.Abs(_rigidbody2D.angularVelocity - _angularVelocity) > float.Epsilon)
             {
                 _rigidbody2D.angularVelocity = _angularVelocity;

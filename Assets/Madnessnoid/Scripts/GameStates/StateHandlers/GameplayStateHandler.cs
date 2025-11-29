@@ -47,7 +47,7 @@ namespace Madnessnoid.GameStates
             {
                 _context.IsResuming = true;
             }
-            if (prevState != GameState.Pause && ((!_context?.IsResuming) ?? true))
+            if (prevState != GameState.Pause && (!_context?.IsResuming ?? true))
             {
                 var levelIndex = _context is null ? 0 : _context.LevelIndex;
                 _levelSession.SetLevel(levelIndex);

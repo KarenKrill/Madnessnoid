@@ -16,7 +16,7 @@ namespace Madnessnoid
         }
 
         [SerializeField]
-        private GameObject _brickPrefab;
+        private BrickBehaviour _brickPrefab;
         [SerializeField]
         private Rect _minBounds;
         [SerializeField]
@@ -46,7 +46,7 @@ namespace Madnessnoid
             var positions = LayoutElements(bricksCount, brickBounds.size, _minBounds, _maxBounds, _maxOffset, out var bounds);
             foreach (var pos in positions)
             {
-                GameObject brick = Instantiate(_brickPrefab, transform);
+                var brick = Instantiate(_brickPrefab, transform);
                 brick.transform.localPosition = pos;
                 brick.GetComponent<SpriteRenderer>().color = _gradient.Evaluate(pos.y / (bounds.height - 1));
             }

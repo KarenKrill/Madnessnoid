@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Madnessnoid
 {
-    public class BrickController : MonoBehaviour
+    public class BrickBehaviour : MonoBehaviour
     {
     }
 }

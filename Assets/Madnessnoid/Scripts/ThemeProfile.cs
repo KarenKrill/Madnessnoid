@@ -11,11 +11,15 @@ namespace Madnessnoid
     public class ThemeProfile : ScriptableObject, IThemeProfile
     {
         public ISceneBackgroundTheme MainMenuBackground => _mainMenuBackground;
+
         public List<ISceneBackgroundTheme> LevelsBackground { get; } = new();
+
         [field: SerializeField]
         public Sprite HitPointIcon { get; private set; }
+
         [field: SerializeField]
         public Sprite ScoreIcon { get; private set; }
+
         [field: SerializeField]
         public Sprite MoneyIcon { get; private set; }
 
@@ -27,6 +31,7 @@ namespace Madnessnoid
 #if !UNITY_EDITOR
         private void Awake() => OnValidate();
 #endif
+
         private void OnValidate()
         {
             LevelsBackground.Clear();
@@ -41,6 +46,7 @@ namespace Madnessnoid
     {
         [field: SerializeField]
         public Sprite Image { get; private set; }
+
         [field: SerializeField]
         public AudioClip Music { get; private set; }
     }

@@ -4,10 +4,10 @@ using System;
 
 using KarenKrill.UniCore.UI.Presenters.Abstractions;
 
+using Madnessnoid.UI.Views.Abstractions;
+
 namespace Madnessnoid.UI.Presenters.Abstractions
 {
-    using Views.Abstractions;
-
     public interface ILevelEndMenuPresenter : IPresenter<ILevelEndMenuView>
     {
         public event Action? Continue;

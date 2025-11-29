@@ -1,8 +1,11 @@
 using System.Collections.Generic;
+
 using UnityEngine;
 using UnityEngine.UI;
-using Zenject;
 
+using Zenject;
+using Cysharp.Threading.Tasks;
+    
 using KarenKrill.UniCore.Diagnostics;
 using KarenKrill.UniCore.Interactions;
 using KarenKrill.UniCore.Logging;
@@ -19,7 +22,6 @@ using KarenKrill.DataStorage;
 namespace Madnessnoid
 {
     using Abstractions;
-    using Cysharp.Threading.Tasks;
     using GameStates;
     using Input;
 
@@ -69,6 +71,7 @@ namespace Madnessnoid
                 gameFlow.Exit();
             }
         }
+
         private void OnUnobservedTaskException(System.Exception ex)
         {
             _logger ??= Container.TryResolve<ILogger>();
@@ -83,14 +86,17 @@ namespace Madnessnoid
             Container.Bind<ILogger>().To<StubLogger>().FromNew().AsSingle();
 #endif
         }
+
         private void InstallSettings()
         {
             Container.Bind<GameSettings>().To<GameSettings>().FromNew().AsSingle();
         }
+
         private void InstallInput()
         {
             Container.BindInterfacesAndSelfTo<InputActionService>().FromNew().AsSingle();
         }
+
         private void InstallGameStateMachine()
         {
             Container.Bind<IStateMachine<GameState>>()
@@ -118,6 +124,7 @@ namespace Madnessnoid
                 }
             }).NonLazy();
         }
+
         private void InstallViewFactory()
         {
             if (_uiRootTransform == null)
@@ -135,6 +142,7 @@ namespace Madnessnoid
             }
             Container.BindInterfacesAndSelfTo<ViewFactory>().AsSingle().WithArguments(_uiRootTransform.gameObject, _uiPrefabs);
         }
+
         private void InstallPresenterBindings()
         {
             Container.BindInterfacesAndSelfTo<PresenterNavigator>().AsTransient();

@@ -1,7 +1,9 @@
 ﻿#nullable enable
 
 using System;
+
 using UnityEngine;
+
 using KarenKrill.UniCore.UI.Views.Abstractions;
 
 namespace Madnessnoid.UI.Views.Abstractions

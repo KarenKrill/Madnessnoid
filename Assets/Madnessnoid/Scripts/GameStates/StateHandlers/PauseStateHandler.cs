@@ -33,6 +33,7 @@ namespace Madnessnoid.GameStates
             _pauseMenuPresenter = pauseMenuPresenter;
 
         }
+
         public override void Enter(GameState prevState, object? context = null)
         {
             base.Enter(prevState);
@@ -47,6 +48,7 @@ namespace Madnessnoid.GameStates
             _pauseMenuPresenter.Exit += OnExit;
             _actionsProvider.SetActionMap(ActionMap.UI);
         }
+
         public override void Exit(GameState nextState)
         {
             _logger.Log(nameof(PauseStateHandler), nameof(Exit));
@@ -73,11 +75,14 @@ namespace Madnessnoid.GameStates
         {
             _stateSwitcher.TransitTo(_previousState);
         }
+
         private void OnRestartRequested()
         {
             _gameFlow.StartLevel(_levelSession.LevelId);
         }
+
         private void OnMainMenu() => _gameFlow.LoadMainMenu();
+
         private void OnExit() => _gameFlow.Exit();
 
     }

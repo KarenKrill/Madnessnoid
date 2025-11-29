@@ -4,6 +4,8 @@ using UnityEngine;
 
 using Zenject;
 
+using KarenKrill.Utilities;
+
 namespace Madnessnoid
 {
     using Abstractions;
@@ -69,7 +71,7 @@ namespace Madnessnoid
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (((1 << collision.gameObject.layer) & _deathZoneLayer) != 0)
+            if (_deathZoneLayer.Contains(collision.gameObject.layer))
             {
                 _rigidbody2D.linearVelocity = Vector2.zero;
                 _rigidbody2D.angularVelocity = 0;
@@ -87,7 +89,7 @@ namespace Madnessnoid
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
-            if (((1 << collision.gameObject.layer) & _breakableLayer) != 0)
+            if (_breakableLayer.Contains(collision.gameObject.layer))
             {
                 if (_deathSounds.Count > 0)
                 {

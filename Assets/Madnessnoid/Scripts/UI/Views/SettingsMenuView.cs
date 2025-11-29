@@ -15,11 +15,15 @@ namespace Madnessnoid.UI.Views
         #endregion
 
         #region Music
+
         public float MusicVolume { get => _musicVolumeSlider.normalizedValue; set => _musicVolumeSlider.normalizedValue = value; }
+
         #endregion
 
         #region Diagnostic
+
         public bool ShowFps { get => _showFpsToggle.isOn; set => _showFpsToggle.isOn = value; }
+
         #endregion
 
 #nullable enable
@@ -41,6 +45,7 @@ namespace Madnessnoid.UI.Views
             _applyButton.onClick.AddListener(OnApplyButtonClicked);
             _cancelButton.onClick.AddListener(OnCancelButtonClicked);
         }
+
         private void OnDisable()
         {
             _applyButton.onClick.RemoveListener(OnApplyButtonClicked);
@@ -48,6 +53,7 @@ namespace Madnessnoid.UI.Views
         }
 
         private void OnApplyButtonClicked() => ApplyRequested?.Invoke();
+
         private void OnCancelButtonClicked() => CancelRequested?.Invoke();
     }
 }

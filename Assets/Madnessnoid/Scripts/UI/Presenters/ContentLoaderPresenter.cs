@@ -11,6 +11,8 @@ namespace Madnessnoid.UI.Presenters
     public class ContentLoaderPresenter : PresenterBase<IContentLoaderView>, IContentLoaderPresenter
     {
         public string StageText { set => View.StageText = value; }
+        public string StatusText { set => View.StatusText = value; }
+        public bool EnableContinue { set => View.EnableContinue = value; }
         public float ProgressValue
         {
             set
@@ -19,8 +21,6 @@ namespace Madnessnoid.UI.Presenters
                 View.ProgressValue = value;
             }
         }
-        public string StatusText { set => View.StatusText = value; }
-        public bool EnableContinue { set => View.EnableContinue = value; }
 
         public event Action Continue;
 
@@ -37,6 +37,7 @@ namespace Madnessnoid.UI.Presenters
             View.EnableContinue = false;
             View.StageText = string.Empty;
         }
+
         protected override void Unsubscribe()
         {
             View.ContinueRequested -= OnViewContinueRequested;

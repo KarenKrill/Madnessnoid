@@ -39,6 +39,7 @@ namespace Madnessnoid.GameStates
             _dataStorage = dataStorage;
             _sceneLoader = sceneLoader;
         }
+
         public override void Enter(GameState prevState, object? context = null)
         {
             _logger.Log(nameof(LoadingStateHandler), nameof(Enter));
@@ -61,6 +62,7 @@ namespace Madnessnoid.GameStates
                 }
             }).Forget();
         }
+
         public override void Exit(GameState nextState)
         {
             base.Exit(nextState);
@@ -116,6 +118,7 @@ namespace Madnessnoid.GameStates
                 _contentLoaderPresenter.StatusText = _failureStatusText;
             }
         }
+
         private async UniTask LoadDataAsync(CancellationToken cancellationToken)
         {
             try
@@ -157,6 +160,7 @@ namespace Madnessnoid.GameStates
                 _logger.LogError(nameof(LoadingStateHandler), $"Player data loading failed: {ex}");
             }
         }
+
         private async UniTask LoadPlayerSessionDataAsync(CancellationToken cancellationToken)
         {
             try
@@ -196,10 +200,12 @@ namespace Madnessnoid.GameStates
                 _logger.LogError(nameof(LoadingStateHandler), $"Player data loading failed: {ex}");
             }
         }
+
         private async UniTask LoadLoadingSceneAsync(CancellationToken cancellationToken)
         {
             await _sceneLoader.LoadAsync(_loadingSceneName, cancellationToken: cancellationToken);
         }
+
         private async UniTask LoadSceneAsync(object? context, CancellationToken cancellationToken)
         {
             _contentLoaderPresenter.ProgressValue = 0;
@@ -227,6 +233,7 @@ namespace Madnessnoid.GameStates
         {
             _dataStorage.SaveAsync(_saveSettingsData).AsUniTask().Forget();
         }
+
         private void OnPlayerSessionMoneyChanged()
         {
             _playerSessionData.Money = _playerSession.Money;
@@ -235,10 +242,12 @@ namespace Madnessnoid.GameStates
                 _dataStorage.SaveAsync(_savePlayerSessionData).AsUniTask().Forget();
             }
         }
+
         private void OnSceneLoadProgressChanged(float progress)
         {
             _contentLoaderPresenter.ProgressValue = progress;
         }
+
         private void OnActivationRequested(Action allowActivationAction)
         {
             _contentLoaderPresenter.ProgressValue = 1;

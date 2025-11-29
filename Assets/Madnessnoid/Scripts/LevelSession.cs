@@ -49,6 +49,7 @@ namespace Madnessnoid
                 throw new ArgumentException(nameof(levelId), $"LevelsConfigCount({_gameConfig.LevelsConfig.Count}) < LevelId({levelId})");
             }
         }
+
         public void BreakTheBlock(int blockId)
         {
             _remainedBlocksCount--;
@@ -72,6 +73,7 @@ namespace Madnessnoid
                 }
             }
         }
+
         public void TakeDamage()
         {
             if (HitPointsCount > 0)

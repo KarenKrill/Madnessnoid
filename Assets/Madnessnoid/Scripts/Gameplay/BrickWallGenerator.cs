@@ -29,6 +29,7 @@ public class BrickWallGenerator : MonoBehaviour
     {
         _levelSession.LevelChanged += OnLevelChanged;
     }
+
     private void OnDisable()
     {
         _levelSession.LevelChanged -= OnLevelChanged;
@@ -46,11 +47,15 @@ public class BrickWallGenerator : MonoBehaviour
         }
         return;
     }
-    private void OnLevelChanged(int levelId)
+
+    private static Rect LerpRect(Rect a, Rect b, float t)
     {
-        var levelConfig = _gameConfig.LevelsConfig[levelId];
-        var blocksCount = levelConfig.BlocksCount;
-        GenerateLevelInternal(blocksCount);
+        return new Rect(
+            Mathf.Lerp(a.x, b.x, t),
+            Mathf.Lerp(a.y, b.y, t),
+            Mathf.Lerp(a.width, b.width, t),
+            Mathf.Lerp(a.height, b.height, t)
+        );
     }
 
     private static Vector2[] LayoutElements(
@@ -111,13 +116,10 @@ public class BrickWallGenerator : MonoBehaviour
         return positions;
     }
 
-    private static Rect LerpRect(Rect a, Rect b, float t)
+    private void OnLevelChanged(int levelId)
     {
-        return new Rect(
-            Mathf.Lerp(a.x, b.x, t),
-            Mathf.Lerp(a.y, b.y, t),
-            Mathf.Lerp(a.width, b.width, t),
-            Mathf.Lerp(a.height, b.height, t)
-        );
+        var levelConfig = _gameConfig.LevelsConfig[levelId];
+        var blocksCount = levelConfig.BlocksCount;
+        GenerateLevelInternal(blocksCount);
     }
 }

@@ -22,6 +22,7 @@ namespace Madnessnoid
                 _audioMixer.SetFloat(_masterVolumeParameter, VolumeToDecibels(value));
             }
         }
+
         public float MusicVolume
         {
             get
@@ -37,6 +38,7 @@ namespace Madnessnoid
                 _audioMixer.SetFloat(_musicVolumeParameter, VolumeToDecibels(value));
             }
         }
+
         public float SfxVolume
         {
             get
@@ -54,14 +56,18 @@ namespace Madnessnoid
         }
 
         public void PlaySfx(AudioClip audioClip) => _sfxSource.PlayOneShot(audioClip);
+
         public void PlayMusic(AudioClip audioClip)
         {
             _musicSource.clip = audioClip;
             _musicSource.loop = true;
             _musicSource.Play();
         }
+
         public void PauseMusic() => _musicSource.Pause();
+
         public void ResumeMusic() => _musicSource.UnPause();
+
         public void StopMusic() => _musicSource.Stop();
 
         [SerializeField]
@@ -85,6 +91,7 @@ namespace Madnessnoid
             }
             return 20f * Mathf.Log10(volume);
         }
+
         private float DecibelsToVolume(float decibels)
         {
             return Mathf.Pow(10f, decibels / 20f);

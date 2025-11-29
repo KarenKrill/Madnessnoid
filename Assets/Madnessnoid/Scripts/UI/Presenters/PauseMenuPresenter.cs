@@ -34,6 +34,7 @@ namespace Madnessnoid.UI.Presenters
             View.MainMenuExitRequested += OnMainMenuExit;
             View.ExitRequested += OnExit;
         }
+
         protected override void Unsubscribe()
         {
             View.ResumeRequested -= OnResume;
@@ -47,18 +48,23 @@ namespace Madnessnoid.UI.Presenters
         private readonly ISettingsMenuPresenter _settingsPresenter;
 
         private void OnResume() => Resume?.Invoke();
+
         private void OnRestart() => Restart?.Invoke();
+
         private void OnSettings()
         {
             _settingsPresenter.Close += OnSettingsClose;
             Navigator.Push(_settingsPresenter);
         }
+
         private void OnSettingsClose()
         {
             _settingsPresenter.Close -= OnSettingsClose;
             Navigator.Pop();
         }
+
         private void OnMainMenuExit() => MainMenu?.Invoke();
+
         private void OnExit() => Exit?.Invoke();
     }
 }

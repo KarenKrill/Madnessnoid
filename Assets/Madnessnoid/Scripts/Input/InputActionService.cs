@@ -64,6 +64,7 @@ namespace Madnessnoid.Input
                 _playerControls.UI.SetCallbacks(this);
             }
         }
+
         public void SetActionMap(ActionMap actionMap)
         {
             switch (actionMap)
@@ -82,6 +83,7 @@ namespace Madnessnoid.Input
             ActionMapChanged?.Invoke(actionMap);
             _logger.Log($"{actionMap} {nameof(ActionMap)} enabled");
         }
+
         public void Disable()
         {
             _playerControls.Player.Disable();
@@ -109,6 +111,7 @@ namespace Madnessnoid.Input
                 MoveCancel?.Invoke();
             }
         }
+
         public void OnSprint(InputAction.CallbackContext context)
         {
             if (context.performed)
@@ -124,6 +127,7 @@ namespace Madnessnoid.Input
                 SprintCancel?.Invoke();
             }
         }
+
         public void OnAttack(InputAction.CallbackContext context)
         {
             if (context.performed)
@@ -137,6 +141,7 @@ namespace Madnessnoid.Input
                 AttackCancel?.Invoke();
             }
         }
+
         public void OnPause(InputAction.CallbackContext context)
         {
             if (context.performed)
@@ -164,6 +169,7 @@ namespace Madnessnoid.Input
                 NavigateCancel?.Invoke();
             }
         }
+
         public void OnPoint(InputAction.CallbackContext context)
         {
             if (context.performed)
@@ -178,6 +184,7 @@ namespace Madnessnoid.Input
                 PointCancel?.Invoke();
             }
         }
+
         public void OnScrollWheel(InputAction.CallbackContext context)
         {
             if (context.performed)
@@ -192,6 +199,7 @@ namespace Madnessnoid.Input
                 ScrollWheelCancel?.Invoke();
             }
         }
+
         public void OnSubmit(InputAction.CallbackContext context)
         {
             if (context.performed)
@@ -200,6 +208,7 @@ namespace Madnessnoid.Input
                 Submit?.Invoke();
             }
         }
+
         public void OnCancel(InputAction.CallbackContext context)
         {
             if (context.performed)
@@ -207,6 +216,7 @@ namespace Madnessnoid.Input
                 Cancel?.Invoke();
             }
         }
+
         public void OnClick(InputAction.CallbackContext context)
         {
             if (context.performed)
@@ -214,6 +224,7 @@ namespace Madnessnoid.Input
                 Click?.Invoke();
             }
         }
+
         public void OnRightClick(InputAction.CallbackContext context)
         {
             if (context.performed)
@@ -224,6 +235,7 @@ namespace Madnessnoid.Input
             {
             }
         }
+
         public void OnMiddleClick(InputAction.CallbackContext context)
         {
             if (context.performed)

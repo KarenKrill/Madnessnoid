@@ -12,26 +12,32 @@ namespace Madnessnoid.GameStates
         {
             _stateSwitcher = stateSwitcher;
         }
+
         public void LoadMainMenu()
         {
             _stateSwitcher.TransitTo(GameState.Loading, new LoadingStateContext());
         }
+
         public void StartLevel(int levelId)
         {
             _stateSwitcher.TransitTo(GameState.Loading, new LoadingStateContext(levelId));
         }
+
         public void PauseLevel()
         {
             _stateSwitcher.TransitTo(GameState.Pause);
         }
+
         public void ResumeLevel()
         {
             _stateSwitcher.TransitTo(GameState.Gameplay);
         }
+
         public void FinishLevel()
         {
             _stateSwitcher.TransitTo(GameState.LevelEnd);
         }
+
         public void Exit()
         {
             _stateSwitcher.TransitTo(GameState.Exit);

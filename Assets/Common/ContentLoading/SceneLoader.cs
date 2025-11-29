@@ -18,6 +18,7 @@ namespace KarenKrill.ContentLoading
             SceneLoadParameters? loadParameters = null,
             CancellationToken cancellationToken = default)
             => await LoadUniAsync(sceneName, loadParameters ?? SceneLoadParameters.Default, cancellationToken).AsTask();
+
         public async Task LoadAsync(int sceneBuildIndex,
             SceneLoadParameters? loadParameters = null,
             CancellationToken cancellationToken = default)
@@ -33,6 +34,7 @@ namespace KarenKrill.ContentLoading
                 loadParameters.activationRequestAction,
                 cancellationToken);
         }
+
         private async UniTask LoadUniAsync(int sceneBuildIndex, SceneLoadParameters loadParameters, CancellationToken cancellationToken)
         {
             var asyncOperation = SceneManager.LoadSceneAsync(sceneBuildIndex, loadParameters.mode);
@@ -43,6 +45,7 @@ namespace KarenKrill.ContentLoading
                 loadParameters.activationRequestAction,
                 cancellationToken);
         }
+
         private async UniTask WaitForAsyncOperation(AsyncOperation asyncOperation, Action<float> progressAction, ActivationRequestHandler activationRequestAction, CancellationToken cancellationToken)
         {
             Progress<float> progressReporter = null;
@@ -75,6 +78,7 @@ namespace KarenKrill.ContentLoading
                 activationRequestAction.Invoke(() => OnActivationAllowed(asyncOperation));
             }
         }
+
         private void OnActivationAllowed(AsyncOperation asyncOperation)
         {
             asyncOperation.allowSceneActivation = true;

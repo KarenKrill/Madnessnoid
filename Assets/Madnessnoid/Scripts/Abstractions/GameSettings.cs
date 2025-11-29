@@ -109,6 +109,7 @@ namespace Madnessnoid.Abstractions
         private float _musicVolume;
         [SerializeField]
         private bool _showFps;
+
         private bool _isSettingsChangedFreezed = false;
         private bool _isDirty = false;
 

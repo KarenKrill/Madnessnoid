@@ -28,6 +28,7 @@ namespace Madnessnoid.GameStates
             _themeProfileProvider = themeProfileProvider;
             _audioController = audioController;
         }
+
         public override void Enter(GameState prevState, object? context = null)
         {
             _mainMenuPresenter.NewGame += OnNewGame;
@@ -38,6 +39,7 @@ namespace Madnessnoid.GameStates
             OnActiveThemeChanged();
             _logger.Log($"{nameof(MainMenuStateHandler)}.{nameof(Enter)}()");
         }
+
         public override void Exit(GameState nextState)
         {
             base.Exit(nextState);
@@ -59,10 +61,12 @@ namespace Madnessnoid.GameStates
         {
             _gameFlow.Exit();
         }
+
         private void OnNewGame()
         {
             _gameFlow.StartLevel(0);
         }
+
         private void OnActiveThemeChanged()
         {
             var activeTheme = _themeProfileProvider.ActiveTheme;

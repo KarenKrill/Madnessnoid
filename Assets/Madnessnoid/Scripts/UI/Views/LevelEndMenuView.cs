@@ -46,6 +46,7 @@ namespace Madnessnoid.UI.Views
         {
             _continueButton.interactable = false;
         }
+
         private void OnEnable()
         {
             _continueButton.onClick.AddListener(OnContinueButtonClicked);
@@ -53,6 +54,7 @@ namespace Madnessnoid.UI.Views
             _mainMenuExitButton.onClick.AddListener(OnMainMenuExitButtonClicked);
             _exitButton.onClick.AddListener(OnExitButtonClicked);
         }
+
         private void OnDisable()
         {
             _continueButton.onClick.RemoveListener(OnContinueButtonClicked);
@@ -62,8 +64,11 @@ namespace Madnessnoid.UI.Views
         }
 
         private void OnContinueButtonClicked() => ContinueRequested?.Invoke();
+
         private void OnRestartButtonClicked() => RestartRequested?.Invoke();
+
         private void OnMainMenuExitButtonClicked() => MainMenuExitRequested?.Invoke();
+
         private void OnExitButtonClicked() => ExitRequested?.Invoke();
     }
 }

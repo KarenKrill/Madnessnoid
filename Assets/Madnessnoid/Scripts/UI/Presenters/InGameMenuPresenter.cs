@@ -33,6 +33,7 @@ namespace Madnessnoid.UI.Presenters
             OnLevelScoreChanged(_levelSession.LevelScore);
             OnActiveThemeChanged();
         }
+
         protected override void Unsubscribe()
         {
             View.PauseRequested -= OnPause;
@@ -45,16 +46,19 @@ namespace Madnessnoid.UI.Presenters
         private readonly ILevelSession _levelSession;
 
         private void OnPause() => Pause?.Invoke();
+
         private void OnActiveThemeChanged()
         {
             var activeTheme = _themeProfileProvider.ActiveTheme;
             View.HitPointIcon = activeTheme.HitPointIcon;
             View.ScoreIcon = activeTheme.ScoreIcon;
         }
+
         private void OnHitPointsCountChanged(int hitPointsCount)
         {
             View.HitPointsCountText = hitPointsCount.ToString();
         }
+
         private void OnLevelScoreChanged(int score)
         {
             View.ScoreText = score.ToString();

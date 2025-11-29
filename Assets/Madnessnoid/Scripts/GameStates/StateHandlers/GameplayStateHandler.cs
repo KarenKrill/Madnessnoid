@@ -34,6 +34,7 @@ namespace Madnessnoid.GameStates
             _audioController = audioController;
             _levelSession = levelSession;
         }
+
         public override void Enter(GameState prevState, object? context = null)
         {
             base.Enter(prevState);
@@ -68,11 +69,6 @@ namespace Madnessnoid.GameStates
             _logger.Log(nameof(GameplayStateHandler), nameof(Enter));
         }
 
-        private void OnLevelCompleted(LevelCompletionResult result)
-        {
-            _gameFlow.FinishLevel();
-        }
-
         public override void Exit(GameState nextState)
         {
             base.Exit(nextState);
@@ -105,6 +101,12 @@ namespace Madnessnoid.GameStates
         {
             _gameFlow.PauseLevel();
         }
+
+        private void OnLevelCompleted(LevelCompletionResult result)
+        {
+            _gameFlow.FinishLevel();
+        }
+
         private void OnActiveThemeChanged()
         {
             _currThemeProfile = _themeProfileProvider.ActiveTheme;

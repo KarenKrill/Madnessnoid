@@ -39,6 +39,7 @@ namespace Madnessnoid.UI.Presenters
             _themeProfileProvider.ActiveThemeChanged += OnActiveThemeChanged;
             UpdateView();
         }
+
         protected override void Unsubscribe()
         {
             View.ContinueRequested -= OnContinueRequested;
@@ -87,10 +88,15 @@ namespace Madnessnoid.UI.Presenters
                 View.EnableReward = false;
             }
         }
+
         private void OnContinueRequested() => Continue?.Invoke();
+
         private void OnRestartRequested() => Restart?.Invoke();
+
         private void OnMainMenuExitRequested() => MainMenu?.Invoke();
+
         private void OnExitRequested() => Exit?.Invoke();
+
         private void OnActiveThemeChanged()
         {
             View.CashRewardIcon = _themeProfileProvider.ActiveTheme.MoneyIcon;

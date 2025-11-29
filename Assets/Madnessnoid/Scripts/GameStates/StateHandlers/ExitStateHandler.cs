@@ -16,6 +16,7 @@ namespace Madnessnoid.GameStates
         {
             _logger = logger;
         }
+
         public void Enter(GameState prevState, object? context = null)
         {
             _logger.Log(nameof(ExitStateHandler), nameof(Enter));
@@ -27,6 +28,7 @@ namespace Madnessnoid.GameStates
             Application.Quit();
 #endif
         }
+
         public void Exit(GameState nextState) { }
 
         private readonly ILogger _logger;

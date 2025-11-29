@@ -9,6 +9,7 @@ namespace Madnessnoid
     public class BallController : MonoBehaviour
     {
         public bool IsPushed { get; private set; } = false;
+
         [Inject]
         public void Initialize(IGameConfig gameConfig,
             ILevelSession levelSession,
@@ -18,6 +19,7 @@ namespace Madnessnoid
             _levelSession = levelSession;
             _audioController = audioController;
         }
+
         public void Push(Vector2 direction, float magnitude)
         {
             IsPushed = true;
@@ -56,11 +58,13 @@ namespace Madnessnoid
             _levelSession.LevelChanged += OnLevelChanged;
             OnLevelChanged(_levelSession.LevelId);
         }
+
         private void OnDisable()
         {
             _levelSession.LevelCompleted -= OnLevelCompleted;
             _levelSession.LevelChanged -= OnLevelChanged;
         }
+
         private void OnTriggerEnter2D(Collider2D collision)
         {
             if (((1 << collision.gameObject.layer) & _deathZoneLayer) != 0)
@@ -78,6 +82,7 @@ namespace Madnessnoid
                 }
             }
         }
+
         private void OnCollisionEnter2D(Collision2D collision)
         {
             if (((1 << collision.gameObject.layer) & _breakableLayer) != 0)
@@ -97,6 +102,7 @@ namespace Madnessnoid
                 _audioController.PlaySfx(_collisionSounds[clipIndex]);
             }
         }
+
         private void FixedUpdate()
         {
             if ((Mathf.Abs(_rigidbody2D.angularVelocity) > _velocityEpsilon)
@@ -117,6 +123,7 @@ namespace Madnessnoid
         {
             _rigidbody2D.constraints = RigidbodyConstraints2D.FreezeAll;
         }
+
         private void OnLevelChanged(int levelId)
         {
             if (levelId >= 0)
@@ -126,6 +133,5 @@ namespace Madnessnoid
                 _angularVelocity = levelConfig.BallAngularVelocity;
             }
         }
-
     }
 }

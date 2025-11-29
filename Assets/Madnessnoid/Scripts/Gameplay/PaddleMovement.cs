@@ -56,6 +56,7 @@ namespace Madnessnoid
         {
             _paddleSize = GetRendererWorldSize(_paddleRenderer);
         }
+
         private void OnEnable()
         {
             if (Application.isMobilePlatform)
@@ -81,6 +82,7 @@ namespace Madnessnoid
                 _playerActionsProvider.Attack += OnAttack;
             }
         }
+
         private void OnDisable()
         {
             if (Application.isMobilePlatform)
@@ -106,11 +108,14 @@ namespace Madnessnoid
                 _playerActionsProvider.Attack -= OnAttack;
             }
         }
+
         private bool IsTouchToTheLeftFromPaddleCenter(Vector2 paddlePos)
         {
             return _touchPosition < (paddlePos.x - _paddleSize.x / 2);
         }
+
         Vector2 GetRendererWorldSize(SpriteRenderer sr) => Vector2.Scale(sr.size, sr.transform.lossyScale);
+
         private void UpdateTouchDirection(Vector2 touchPos)
         {
             var pos = ScreenToWorld2D(touchPos);
@@ -118,6 +123,7 @@ namespace Madnessnoid
             _isLeftTouchDirection = IsTouchToTheLeftFromPaddleCenter(_paddleTransform.position);
             _touchDirection = _isLeftTouchDirection ? -1 : 1;
         }
+
         private Vector3 ScreenToWorld2D(Vector2 touchPos)
         {
             var rect = _camera.pixelRect;
@@ -127,6 +133,7 @@ namespace Madnessnoid
             float distance = _camera.orthographic ? Mathf.Abs(_camera.transform.position.z) : 0;
             return _camera.ScreenToWorldPoint(new Vector3(touchPos.x, touchPos.y, distance));
         }
+
         private void OnMoveStarted()
         {
             if (!Application.isMobilePlatform && !_ballController.IsPushed)
@@ -149,7 +156,9 @@ namespace Madnessnoid
                 }
             }).Forget();
         }
+
         private void OnMoveCancel() => _moveCts?.Cancel();
+
         private void OnTouchPosActionPerformed(InputAction.CallbackContext ctx)
         {
             if (ctx.control.parent is TouchControl touchControl)
@@ -158,6 +167,7 @@ namespace Madnessnoid
                 UpdateTouchDirection(pos);
             }
         }
+
         private void OnAttack()
         {
             if (!_ballController.IsPushed)

@@ -22,6 +22,7 @@ namespace KarenKrill.DataStorage
         {
             _logger = logger;
         }
+
         public async Task SignUpAsync(string login, string password)
         {
 #if !UNITY_WEBGL
@@ -38,6 +39,7 @@ namespace KarenKrill.DataStorage
             }
 #endif
         }
+
         public async Task SignInAsync(string login, string password)
         {
 #if !UNITY_WEBGL
@@ -57,6 +59,7 @@ namespace KarenKrill.DataStorage
             }
 #endif
         }
+
         public async Task SignInAnonymouslyAsync()
         {
 #if !UNITY_WEBGL
@@ -80,6 +83,7 @@ namespace KarenKrill.DataStorage
             }
 #endif
         }
+
 #if UNITY_WEBGL
         public Task SignOutAsync()
         {
@@ -135,6 +139,7 @@ namespace KarenKrill.DataStorage
             }
 #endif
         }
+
         public async Task<IDictionary<string, object>> LoadAsync(IDictionary<string, Type> metadata) =>
             await LoadUniAsync(metadata).AsTask();
 
@@ -181,6 +186,7 @@ namespace KarenKrill.DataStorage
             }
 #endif
         }
+
         public async Task SaveAsync(IDictionary<string, object> data)
         {
 #if !UNITY_WEBGL
@@ -205,13 +211,13 @@ namespace KarenKrill.DataStorage
 #endif
         }
 
-#endregion
+        #endregion
 
         private readonly ILogger _logger;
+        private readonly object[] _deserializationParams = new object[1] { null };
 #if !UNITY_WEBGL
         private readonly SemaphoreSlim _signinSemaphore = new(1, 1);
 #endif
-        private readonly object[] _deserializationParams = new object[1] { null };
 
         private async Task InitServicesIfNeeded()
         {
@@ -220,6 +226,7 @@ namespace KarenKrill.DataStorage
                 await UnityServices.InitializeAsync();
             }
         }
+
         private async Task SignInServicesIfNeeded()
         {
             if (!AuthenticationService.Instance.IsSignedIn)
@@ -227,7 +234,9 @@ namespace KarenKrill.DataStorage
                 await AuthenticationService.Instance.SignInAnonymouslyAsync();
             }
         }
+
         private void OnSessionExpired() => OnSessionExpiredAsync().AsUniTask().Forget();
+
         private async Task OnSessionExpiredAsync()
         {
 #if !UNITY_WEBGL

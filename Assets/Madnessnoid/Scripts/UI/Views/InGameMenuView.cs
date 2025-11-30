@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
-
 using TMPro;
 
 using KarenKrill.UniCore.UI.Views;
@@ -34,6 +33,7 @@ namespace Madnessnoid.UI.Views
         {
             _pauseButton.onClick.AddListener(OnPauseButtonClicked);
         }
+
         private void OnDisable()
         {
             _pauseButton.onClick.RemoveListener(OnPauseButtonClicked);

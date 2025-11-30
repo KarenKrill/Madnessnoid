@@ -22,6 +22,7 @@ namespace Madnessnoid
                 throw new ArgumentOutOfRangeException(nameof(money), money, "The amount of money added must be greater than 0");
             }
         }
+
         public void RemoveMoney(int money)
         {
             if (money <= Money)

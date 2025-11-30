@@ -13,6 +13,9 @@ namespace Madnessnoid
 
         [field: SerializeField]
         public Sprite BallSprite { get; private set; }
+        
+        [field: SerializeField]
+        public Sprite PaddleSprite { get; private set; }
 
         [field: SerializeField]
         public List<AudioClip> WallCollisionSounds { get; private set; } = new();

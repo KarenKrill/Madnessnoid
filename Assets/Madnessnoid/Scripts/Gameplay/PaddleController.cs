@@ -11,14 +11,20 @@ using Madnessnoid.Input.Abstractions;
 
 namespace Madnessnoid
 {
-    public class PaddleMovement : MonoBehaviour
+    using Abstractions;
+
+    public class PaddleController : MonoBehaviour
     {
         [Inject]
         public void Initialize(ILogger logger,
-            IPlayerActionsProvider playerActionsProvider)
+            IPlayerActionsProvider playerActionsProvider,
+            ILevelSession levelSession,
+            IThemeProfileProvider themeProfileProvider)
         {
             _logger = logger;
             _playerActionsProvider = playerActionsProvider;
+            _levelSession = levelSession;
+            _themeProfileProvider = themeProfileProvider;
         }
 
         [SerializeField]
@@ -40,6 +46,8 @@ namespace Madnessnoid
 
         private ILogger _logger;
         private IPlayerActionsProvider _playerActionsProvider;
+        private ILevelSession _levelSession;
+        private IThemeProfileProvider _themeProfileProvider;
         private readonly InputAction _touchPosAction = new(type: InputActionType.Value, binding: "<Touchscreen>/primarytouch/position");
         private readonly InputAction _touch0PosAction = new(type: InputActionType.Value, binding: "<Touchscreen>/touch0/position");
         private readonly InputAction _touch1PosAction = new(type: InputActionType.Value, binding: "<Touchscreen>/touch1/position");
@@ -81,6 +89,9 @@ namespace Madnessnoid
                 _playerActionsProvider.MoveCancel += OnMoveCancel;
                 _playerActionsProvider.Attack += OnAttack;
             }
+            _levelSession.LevelChanged += OnLevelChanged;
+            _themeProfileProvider.ActiveThemeChanged += OnActiveThemeChanged;
+            OnActiveThemeChanged();
         }
 
         private void OnDisable()
@@ -107,6 +118,8 @@ namespace Madnessnoid
                 _playerActionsProvider.MoveCancel -= OnMoveCancel;
                 _playerActionsProvider.Attack -= OnAttack;
             }
+            _levelSession.LevelChanged -= OnLevelChanged;
+            _themeProfileProvider.ActiveThemeChanged -= OnActiveThemeChanged;
         }
 
         private bool IsTouchToTheLeftFromPaddleCenter(Vector2 paddlePos)
@@ -176,6 +189,18 @@ namespace Madnessnoid
             }
         }
 
+        private void OnLevelChanged(int levelId) => OnActiveThemeChanged();
+
+        private void OnActiveThemeChanged()
+        {
+            var levelId = _levelSession.LevelId;
+            if (levelId >= 0)
+            {
+                _paddleRenderer.sprite = _themeProfileProvider.ActiveTheme.LevelThemes[levelId].PaddleSprite;
+                _paddleSize = GetRendererWorldSize(_paddleRenderer);
+            }
+        }
+
         private async UniTask MoveTaskAsync(CancellationToken cancellationToken)
         {
             try
@@ -217,7 +242,7 @@ namespace Madnessnoid
             catch (OperationCanceledException) { }
             catch (Exception ex)
             {
-                _logger.LogError(nameof(PaddleMovement), ex);
+                _logger.LogError(nameof(PaddleController), ex);
             }
         }
     }

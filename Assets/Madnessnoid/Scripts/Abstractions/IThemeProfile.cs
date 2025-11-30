@@ -23,6 +23,7 @@ namespace Madnessnoid.Abstractions
     {
         public ISceneBackgroundTheme Background { get; }
         public Sprite BallSprite { get; }
+        public Sprite PaddleSprite { get; }
         public List<AudioClip> WallCollisionSounds { get; }
         public List<AudioClip> LosingHitPointSounds { get; }
         public List<IBrickTheme> BrickThemes { get; }

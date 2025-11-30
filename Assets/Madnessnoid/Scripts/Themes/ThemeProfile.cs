@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 
 using UnityEngine;
@@ -12,7 +11,7 @@ namespace Madnessnoid
     {
         public ISceneBackgroundTheme MainMenuBackground => _mainMenuBackground;
 
-        public List<ISceneBackgroundTheme> LevelsBackground { get; } = new();
+        public List<ILevelTheme> LevelThemes { get; } = new();
 
         [field: SerializeField]
         public Sprite HitPointIcon { get; private set; }
@@ -25,8 +24,9 @@ namespace Madnessnoid
 
         [SerializeField]
         private SceneBackgroundTheme _mainMenuBackground;
+
         [SerializeField]
-        private List<SceneBackgroundTheme> _levelsBackground;
+        private List<LevelTheme> _levelThemes = new();
 
 #if !UNITY_EDITOR
         private void Awake() => OnValidate();
@@ -34,20 +34,11 @@ namespace Madnessnoid
 
         private void OnValidate()
         {
-            LevelsBackground.Clear();
-            foreach (var level in _levelsBackground)
+            LevelThemes.Clear();
+            foreach (var level in _levelThemes)
             {
-                LevelsBackground.Add(level);
+                LevelThemes.Add(level);
             }
         }
-    }
-    [Serializable]
-    public class SceneBackgroundTheme : ISceneBackgroundTheme
-    {
-        [field: SerializeField]
-        public Sprite Image { get; private set; }
-
-        [field: SerializeField]
-        public AudioClip Music { get; private set; }
     }
 }

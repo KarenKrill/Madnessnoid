@@ -96,8 +96,15 @@ namespace Madnessnoid
                     var clipIndex = Random.Range(0, _deathSounds.Count);
                     _audioController.PlaySfx(_deathSounds[clipIndex]);
                 }
-                collision.gameObject.SetActive(false);
-                Destroy(collision.gameObject);
+                if (collision.gameObject.TryGetComponent<BrickBehaviour>(out var brick))
+                {
+                    brick.Damage(1);
+                }
+                else
+                {
+                    collision.gameObject.SetActive(false);
+                    Destroy(collision.gameObject);
+                }
                 _levelSession.BreakTheBlock(0);
             }
             if (_collisionSounds.Count > 0)

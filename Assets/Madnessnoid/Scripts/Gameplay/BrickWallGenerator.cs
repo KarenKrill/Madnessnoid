@@ -2,10 +2,12 @@
 
 using Zenject;
 
+using KarenKrill.UniCore.Instantiattion;
+
 namespace Madnessnoid
 {
     using Abstractions;
-
+    
     public class BrickWallGenerator : MonoBehaviour
     {
         [Inject]
@@ -16,7 +18,7 @@ namespace Madnessnoid
         }
 
         [SerializeField]
-        private GameObject _brickPrefab;
+        private BrickBehaviour _brickPrefab;
         [SerializeField]
         private Rect _minBounds;
         [SerializeField]
@@ -25,10 +27,25 @@ namespace Madnessnoid
         private Vector2 _maxOffset;
         [SerializeField]
         private Gradient _gradient;
+        [SerializeField]
+        private int _startBrickPoolCapacity = 10;
+
+        private const int _MaxElementsCountForMinBoundsUsage = 1;
+        private const int _MinElementsCountForMaxBoundsUsage = 50;
 
         private ILevelSession _levelSession;
         private IGameConfig _gameConfig;
-        private const int _ElementsCountForMaxBoundsUsage = 50;
+        private ComponentPool<BrickBehaviour> _brickPool;
+
+        private void Awake()
+        {
+            _brickPool = new(_brickPrefab, transform, _startBrickPoolCapacity);
+        }
+
+        private void OnDestroy()
+        {
+            _brickPool.Dispose();
+        }
 
         private void OnEnable()
         {
@@ -42,15 +59,24 @@ namespace Madnessnoid
 
         private void GenerateLevelInternal(int bricksCount)
         {
-            var brickBounds = _brickPrefab.GetComponentInChildren<SpriteRenderer>().bounds;
+            var brickBounds = _brickPrefab.gameObject.GetComponentInChildren<SpriteRenderer>().bounds;
             var positions = LayoutElements(bricksCount, brickBounds.size, _minBounds, _maxBounds, _maxOffset, out var bounds);
             foreach (var pos in positions)
             {
-                GameObject brick = Instantiate(_brickPrefab, transform);
+                var brick = _brickPool.Get();
                 brick.transform.localPosition = pos;
                 brick.GetComponent<SpriteRenderer>().color = _gradient.Evaluate(pos.y / (bounds.height - 1));
+                brick.Died += OnBrickDied;
             }
             return;
+        }
+
+        private void OnBrickDied(IDamagable damagable)
+        {
+            if (damagable is BrickBehaviour brick)
+            {
+                _brickPool.Release(brick);
+            }
         }
 
         private static Rect LerpRect(Rect a, Rect b, float t)
@@ -74,7 +100,7 @@ namespace Madnessnoid
             // 1. Bounds interpolation
 
             // 0 → min bounds, 1 → max bounds
-            float itemsCountWeight = Mathf.InverseLerp(1, _ElementsCountForMaxBoundsUsage, count);
+            float itemsCountWeight = Mathf.InverseLerp(_MaxElementsCountForMinBoundsUsage, _MinElementsCountForMaxBoundsUsage, count);
             bounds = LerpRect(minBounds, maxBounds, itemsCountWeight);
 
             // 2. Calculating the number of columns and rows

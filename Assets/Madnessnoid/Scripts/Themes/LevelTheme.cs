@@ -12,7 +12,7 @@ namespace Madnessnoid
         public ISceneBackgroundTheme Background => _background;
 
         [field: SerializeField]
-        public Sprite BallIcon { get; private set; }
+        public Sprite BallSprite { get; private set; }
 
         [field: SerializeField]
         public List<AudioClip> WallCollisionSounds { get; private set; } = new();

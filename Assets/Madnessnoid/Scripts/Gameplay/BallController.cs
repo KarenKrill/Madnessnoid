@@ -61,7 +61,7 @@ namespace Madnessnoid
             if (_activeLevelTheme != newTheme)
             {
                 _activeLevelTheme = newTheme;
-                _spriteRenderer.sprite = _activeLevelTheme.BallIcon;
+                _spriteRenderer.sprite = _activeLevelTheme.BallSprite;
             }
         }
 

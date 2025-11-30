@@ -22,7 +22,7 @@ namespace Madnessnoid.Abstractions
     public interface ILevelTheme
     {
         public ISceneBackgroundTheme Background { get; }
-        public Sprite BallIcon { get; }
+        public Sprite BallSprite { get; }
         public List<AudioClip> WallCollisionSounds { get; }
         public List<AudioClip> LosingHitPointSounds { get; }
         public List<IBrickTheme> BrickThemes { get; }
@@ -30,7 +30,7 @@ namespace Madnessnoid.Abstractions
 
     public interface IBrickTheme
     {
-        public Sprite Icon { get; }
+        public Sprite Sprite { get; }
         public List<AudioClip> DamageSounds { get; }
         public List<AudioClip> FatalDamageSounds { get; }
         public List<AnimationClip> DamageAnimations { get; }

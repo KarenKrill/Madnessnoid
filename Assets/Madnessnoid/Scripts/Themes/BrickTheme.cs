@@ -10,7 +10,7 @@ namespace Madnessnoid
     public class BrickTheme : ScriptableObject, IBrickTheme
     {
         [field: SerializeField]
-        public Sprite Icon { get; private set; }
+        public Sprite Sprite { get; private set; }
 
         [field: SerializeField]
         public List<AudioClip> DamageSounds { get; private set; } = new();

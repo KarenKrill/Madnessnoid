@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _health: 1
-  _brickImage: {fileID: 7102813547384839937}
+  _spriteRenderer: {fileID: 7102813547384839937}
 --- !u!212 &7102813547384839937
 SpriteRenderer:
   m_ObjectHideFlags: 0

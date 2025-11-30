@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35b2fd5aff5d2c640b56ea5efe333c20, type: 3}
   m_Name: BrickTheme1
   m_EditorClassIdentifier: 
-  <Icon>k__BackingField: {fileID: 21300000, guid: da8df4801e35f114fada6fdfe845fa06, type: 3}
+  <Sprite>k__BackingField: {fileID: 21300000, guid: da8df4801e35f114fada6fdfe845fa06, type: 3}
   <DamageSounds>k__BackingField:
   - {fileID: 8300000, guid: e51e2e6ffa562774cb5fffdf0410b83c, type: 3}
   <FatalDamageSounds>k__BackingField:

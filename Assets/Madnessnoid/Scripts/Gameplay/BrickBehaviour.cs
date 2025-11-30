@@ -43,14 +43,14 @@ namespace Madnessnoid
         }
 
         [SerializeField]
-        private SpriteRenderer _brickImage;
+        private SpriteRenderer _spriteRenderer;
 
         private IBrickTheme _brickTheme;
         private IAudioController _audioController;
 
         private void OnBrickThemeChanged()
         {
-            _brickImage.sprite = _brickTheme.Icon;
+            _spriteRenderer.sprite = _brickTheme.Sprite;
         }
     }
 }

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3fd85cf6be9ac0e43ababc1d86e86d64, type: 3}
-  m_Name: ThemeProfile
+  m_Name: BloodyFleshThemeProfile
   m_EditorClassIdentifier: 
   <HitPointIcon>k__BackingField: {fileID: 21300000, guid: 0e1c5d482d66b6941aafb89c3bac56a6, type: 3}
   <ScoreIcon>k__BackingField: {fileID: 21300000, guid: 1b128927d8a4f2d4fbf01bc781f7e072, type: 3}

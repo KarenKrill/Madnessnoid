@@ -144,6 +144,7 @@ namespace Madnessnoid.GameStates
                         _gameSettings.ShowFps = settings.ShowFps;
                         _gameSettings.MusicVolume = Mathf.Clamp01(settings.MusicVolume);
                         _gameSettings.QualityLevel = settings.QualityLevel;
+                        _gameSettings.PussyMode = settings.PussyMode;
                     }
                     finally
                     {

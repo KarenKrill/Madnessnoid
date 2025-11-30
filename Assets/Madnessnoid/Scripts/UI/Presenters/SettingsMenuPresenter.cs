@@ -27,8 +27,10 @@ namespace Madnessnoid.UI.Presenters
         {
             _gameSettings.ShowFpsChanged += OnModelShowFpsChanged;
             _gameSettings.MusicVolumeChanged += OnModelMusicVolumeChanged;
+            _gameSettings.PussyModeChanged += OnPussyModeChanged;
             View.ShowFps = _gameSettings.ShowFps;
             View.MusicVolume = _gameSettings.MusicVolume;
+            View.PussyMode = _gameSettings.PussyMode;
             View.ApplyRequested += OnApply;
             View.CancelRequested += OnCancel;
         }
@@ -37,6 +39,7 @@ namespace Madnessnoid.UI.Presenters
         {
             _gameSettings.ShowFpsChanged -= OnModelShowFpsChanged;
             _gameSettings.MusicVolumeChanged -= OnModelMusicVolumeChanged;
+            _gameSettings.PussyModeChanged -= OnPussyModeChanged;
             View.ApplyRequested -= OnApply;
             View.CancelRequested -= OnCancel;
         }
@@ -47,10 +50,13 @@ namespace Madnessnoid.UI.Presenters
 
         private void OnModelMusicVolumeChanged(float musicVolume) => View.MusicVolume = musicVolume;
 
+        private void OnPussyModeChanged(bool state) => View.PussyMode = state;
+
         private void OnApply()
         {
             _gameSettings.ShowFps = View.ShowFps;
             _gameSettings.MusicVolume = View.MusicVolume;
+            _gameSettings.PussyMode = View.PussyMode;
             Close?.Invoke();
         }
 

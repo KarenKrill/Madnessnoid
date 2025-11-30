@@ -339,7 +339,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _uiRootTransform: {fileID: 7749756908626953801}
-  _worldUiRootCanvas: {fileID: 0}
   _uiPrefabs:
   - {fileID: 3657630308797553860, guid: 49c1bf352f8aeb34984669b4857e5d8c, type: 3}
   - {fileID: 8134017537965800947, guid: d7e43f8bf50ba244485f4dbbb0d91b09, type: 3}
@@ -351,6 +350,8 @@ MonoBehaviour:
   _diagnosticsProvider: {fileID: 1573532580524690398}
   _audioController: {fileID: 1633306615443402855}
   _themeProfileProvider: {fileID: 11400000, guid: 4f5945283b258ac47a40e98c527cd6f1, type: 2}
+  _defaultThemeProfile: {fileID: 11400000, guid: 107db0f04f68c944583c8970dd40f404, type: 2}
+  _pussyModeThemeProfile: {fileID: 11400000, guid: d5117472d0f849d42943cb6f6c528520, type: 2}
   _gameConfig: {fileID: 11400000, guid: acc211a54d1837e4ebb50faa63161bd4, type: 2}
 --- !u!1 &6742440406697486925
 GameObject:

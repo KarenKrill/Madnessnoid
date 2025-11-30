@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75fd34cc9d8fc344bb8c40947992a554, type: 3}
   m_Name: ThemeProfileProvider
   m_EditorClassIdentifier: 
-  _activeTheme: {fileID: 11400000, guid: d5117472d0f849d42943cb6f6c528520, type: 2}
-  _previousTheme: {fileID: 11400000, guid: d5117472d0f849d42943cb6f6c528520, type: 2}
+  _activeTheme: {fileID: 11400000, guid: 107db0f04f68c944583c8970dd40f404, type: 2}
+  _previousTheme: {fileID: 11400000, guid: 107db0f04f68c944583c8970dd40f404, type: 2}

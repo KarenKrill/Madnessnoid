@@ -35,7 +35,6 @@ namespace Madnessnoid.UI.Views
             Destroy(_exitButton);
         }
 #endif
-
         private void OnEnable()
         {
             _resumeButton.onClick.AddListener(OnResumeButtonClicked);
@@ -46,7 +45,6 @@ namespace Madnessnoid.UI.Views
             _exitButton.onClick.AddListener(OnExitButtonClicked);
 #endif
         }
-
         private void OnDisable()
         {
             _resumeButton.onClick.RemoveListener(OnResumeButtonClicked);
@@ -59,13 +57,9 @@ namespace Madnessnoid.UI.Views
         }
 
         private void OnResumeButtonClicked() => ResumeRequested?.Invoke();
-
         private void OnRestartButtonClicked() => RestartRequested?.Invoke();
-
         private void OnSettingsButtonClicked() => SettingsOpenRequested?.Invoke();
-
         private void OnMainMenuExitButtonClicked() => MainMenuExitRequested?.Invoke();
-
 #if !UNITY_WEBGL
         private void OnExitButtonClicked() => ExitRequested?.Invoke();
 #endif

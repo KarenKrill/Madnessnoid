@@ -16,7 +16,6 @@ namespace Madnessnoid.GameStates
         {
             _presenters = presenters.ToArray();
         }
-
         public virtual void Enter(T prevState, object? context = null)
         {
             foreach (var presenter in _presenters)
@@ -24,7 +23,6 @@ namespace Madnessnoid.GameStates
                 presenter.Enable();
             }
         }
-
         public virtual void Exit(T nextState)
         {
             foreach (var presenter in _presenters)

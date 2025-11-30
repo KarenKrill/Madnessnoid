@@ -3,8 +3,8 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
-using TMPro;
 
+using TMPro;
 using DG.Tweening;
 
 using KarenKrill.UniCore.UI.Views;
@@ -119,7 +119,7 @@ namespace Madnessnoid.UI.Views
 
         [SerializeField]
         private InputAction _continueAction = new("AnyKey", InputActionType.PassThrough, binding: "*/<Button>");
-        private readonly InputAction _mobileContinueAction = new("AnyTouch", InputActionType.Button, binding: "<Touchscreen>/touch0/press");
+        private InputAction _mobileContinueAction = new("AnyTouch", InputActionType.Button, binding: "<Touchscreen>/touch0/press");
         private float _progressValue = 0;
 
         private void Awake()
@@ -133,7 +133,6 @@ namespace Madnessnoid.UI.Views
                 _continueAction.Disable();
             }
         }
-
         private void OnEnable()
         {
             if (Application.isMobilePlatform)
@@ -145,7 +144,6 @@ namespace Madnessnoid.UI.Views
                 _continueAction.performed += OnContinueActionPerformed;
             }
         }
-
         private void OnDisable()
         {
             if (Application.isMobilePlatform)

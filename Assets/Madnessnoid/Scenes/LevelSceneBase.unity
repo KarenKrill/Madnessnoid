@@ -1055,7 +1055,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 598fc54a66aff6f49bf16799c30d9648, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _brickPrefab: {fileID: 2298725786976404484, guid: fa5aade90d8a95647a2fd9348618221f, type: 3}
+  _brickPrefab: {fileID: 7574419906057400691, guid: fa5aade90d8a95647a2fd9348618221f, type: 3}
   _minBounds:
     serializedVersion: 2
     x: -2
@@ -1099,7 +1099,6 @@ MonoBehaviour:
     m_ColorSpace: -1
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
-  _startBrickPoolCapacity: 10
 --- !u!1 &1188795789
 GameObject:
   m_ObjectHideFlags: 0

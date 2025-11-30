@@ -6,11 +6,11 @@ using KarenKrill.UniCore.UI.Presenters.Abstractions;
 using KarenKrill.UniCore.UI.Views.Abstractions;
 
 using Madnessnoid.Abstractions;
-using Madnessnoid.UI.Views.Abstractions;
 
 namespace Madnessnoid.UI.Presenters
 {
     using Abstractions;
+    using Views.Abstractions;
 
     public class LevelEndMenuPresenter : PresenterBase<ILevelEndMenuView>, ILevelEndMenuPresenter, IPresenter<ILevelEndMenuView>
     {
@@ -39,7 +39,6 @@ namespace Madnessnoid.UI.Presenters
             _themeProfileProvider.ActiveThemeChanged += OnActiveThemeChanged;
             UpdateView();
         }
-
         protected override void Unsubscribe()
         {
             View.ContinueRequested -= OnContinueRequested;
@@ -52,10 +51,6 @@ namespace Madnessnoid.UI.Presenters
         private static readonly string _gameWinText = "You are a winner!";
         private static readonly string _levelWinText = "Level completed!";
         private static readonly string _levelLoseText = "You are a loser!";
-        // Light orange color
-        private static readonly Color _wonTitleTextColor = new(1, (float)0xAC / 0xFF, (float)0x40 / 0xFF, 1);
-        // Orange red color
-        private static readonly Color _lostTitleTextColor = new((float)0xE1 / 0xFF, (float)0x24 / 0xFF, 0);
 
         private readonly IGameConfig _gameConfig;
         private readonly ILevelSession _levelSession;
@@ -65,7 +60,7 @@ namespace Madnessnoid.UI.Presenters
         {
             if (_levelSession.LevelState == LevelState.Won)
             {
-                View.TitleTextColor = _wonTitleTextColor;
+                View.TitleTextColor = new Color(1, (float)0xAC / 0xFF, (float)0x40 / 0xFF, 1);
                 if (_levelSession.LevelId < _gameConfig.LevelsConfig.Count - 1)
                 {
                     View.TitleText = _levelWinText;
@@ -87,23 +82,19 @@ namespace Madnessnoid.UI.Presenters
             else
             {
                 View.TitleText = _levelLoseText;
-                View.TitleTextColor = _lostTitleTextColor;
+                View.TitleTextColor = new Color((float)0xE1 / 0xFF, (float)0x24 / 0xFF, 0);
                 View.EnableContinue = false;
                 View.EnableReward = false;
             }
         }
-
         private void OnContinueRequested() => Continue?.Invoke();
-
         private void OnRestartRequested() => Restart?.Invoke();
-
         private void OnMainMenuExitRequested() => MainMenu?.Invoke();
-
         private void OnExitRequested() => Exit?.Invoke();
-
         private void OnActiveThemeChanged()
         {
             View.CashRewardIcon = _themeProfileProvider.ActiveTheme.MoneyIcon;
         }
+
     }
 }

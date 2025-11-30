@@ -4,11 +4,11 @@ using KarenKrill.UniCore.UI.Presenters.Abstractions;
 using KarenKrill.UniCore.UI.Views.Abstractions;
 
 using Madnessnoid.Abstractions;
-using Madnessnoid.UI.Views.Abstractions;
 
 namespace Madnessnoid.UI.Presenters
 {
     using Abstractions;
+    using Views.Abstractions;
 
     public class MainMenuPresenter : PresenterBase<IMainMenuView>, IMainMenuPresenter, IPresenter<IMainMenuView>
     {
@@ -36,7 +36,6 @@ namespace Madnessnoid.UI.Presenters
             OnMoneyChanged();
             OnActiveThemeChanged();
         }
-
         protected override void Unsubscribe()
         {
             View.NewGameRequested -= OnNewGame;
@@ -50,7 +49,6 @@ namespace Madnessnoid.UI.Presenters
         private readonly IThemeProfileProvider _themeProfileProvider;
 
         private void OnNewGame() => NewGame?.Invoke();
-
         private void OnSettings()
         {
             View.Interactable = false;
@@ -58,7 +56,6 @@ namespace Madnessnoid.UI.Presenters
             _settingsPresenter.Close += OnSettingsClose;
             Navigator.Push(_settingsPresenter);
         }
-
         private void OnSettingsClose()
         {
             _settingsPresenter.Close -= OnSettingsClose;
@@ -66,14 +63,11 @@ namespace Madnessnoid.UI.Presenters
             View.Interactable = true;
             View.SetFocus(true);
         }
-
         private void OnExit() => Exit?.Invoke();
-
         private void OnMoneyChanged()
         {
             View.MoneyText = _playerSession.Money.ToString();
         }
-
         private void OnActiveThemeChanged()
         {
             View.MoneyIcon = _themeProfileProvider.ActiveTheme.MoneyIcon;

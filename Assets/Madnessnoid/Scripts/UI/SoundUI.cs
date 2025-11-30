@@ -19,12 +19,10 @@ namespace Madnessnoid
                 }
             }
         }
-
         public void OnPointerExit(PointerEventData eventData)
         {
             _isPointerEntered = false;
         }
-
         public void OnSelect(BaseEventData eventData)
         {
             _isSelected = true;
@@ -36,12 +34,10 @@ namespace Madnessnoid
                 }
             }
         }
-
         public void OnDeselect(BaseEventData eventData)
         {
             _isSelected = false;
         }
-
         public void OnPointerClick(PointerEventData eventData)
         {
             if (_IsInteractable && _clickSound != null)
@@ -51,14 +47,12 @@ namespace Madnessnoid
         }
 
         private bool _IsInteractable => !_isAttachedToSelectable || _selectable.interactable;
-
         [SerializeField]
         private AudioClip _hoverSound = null;
         [SerializeField]
         private AudioClip _selectSound = null;
         [SerializeField]
         private AudioClip _clickSound = null;
-
         private static IAudioController _audioController;
         private bool _isSelected = false;
         private bool _isPointerEntered = false;
@@ -69,7 +63,6 @@ namespace Madnessnoid
         {
             _isAttachedToSelectable = TryGetComponent(out _selectable);
         }
-
         private void Start()
         {
             _audioController ??= FindFirstObjectByType<AudioController>();

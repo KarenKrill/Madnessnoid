@@ -1,11 +1,9 @@
+using Madnessnoid.Abstractions;
 using UnityEngine;
-
 using Zenject;
 
 namespace Madnessnoid
 {
-    using Abstractions;
-
     public class LevelController : MonoBehaviour
     {
         [Inject]
@@ -26,13 +24,11 @@ namespace Madnessnoid
             _themeProfileProvider.ActiveThemeChanged += OnActiveThemeChanged;
             _levelSession.LevelChanged += OnLevelChanged;
         }
-
         private void OnDisable()
         {
             _themeProfileProvider.ActiveThemeChanged -= OnActiveThemeChanged;
             _levelSession.LevelChanged -= OnLevelChanged;
         }
-
         private void Start() => UpdateBackground();
 
         private void UpdateBackground()
@@ -43,9 +39,7 @@ namespace Madnessnoid
                 _levelBackground.sprite = background;
             }
         }
-
         private void OnActiveThemeChanged() => UpdateBackground();
-
         private void OnLevelChanged(int levelId) => UpdateBackground();
 
     }

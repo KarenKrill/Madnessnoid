@@ -2,6 +2,7 @@ using System;
 
 using UnityEngine;
 using UnityEngine.UI;
+
 using TMPro;
 
 using KarenKrill.UniCore.UI.Views;
@@ -36,7 +37,6 @@ namespace Madnessnoid.UI.Views
             _settingsButton.onClick.AddListener(OnSettingsButtonClicked);
             _exitButton.onClick.AddListener(OnExitButtonClicked);
         }
-
         private void OnDisable()
         {
             _newGameButton.onClick.RemoveListener(OnNewGameButtonClicked);
@@ -45,9 +45,7 @@ namespace Madnessnoid.UI.Views
         }
 
         private void OnNewGameButtonClicked() => NewGameRequested?.Invoke();
-
         private void OnSettingsButtonClicked() => SettingsOpenRequested?.Invoke();
-
         private void OnExitButtonClicked() => ExitRequested?.Invoke();
     }
 }

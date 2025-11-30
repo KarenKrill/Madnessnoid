@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 using UnityEngine;
 
 using Zenject;
@@ -17,22 +15,26 @@ namespace Madnessnoid
         [Inject]
         public void Initialize(IGameConfig gameConfig,
             ILevelSession levelSession,
-            IAudioController audioController)
+            IAudioController audioController,
+            IThemeProfileProvider themeProfileProvider)
         {
             _gameConfig = gameConfig;
             _levelSession = levelSession;
             _audioController = audioController;
+            _themeProfileProvider = themeProfileProvider;
         }
 
         public void Push(Vector2 direction, float magnitude)
         {
             IsPushed = true;
             var force = direction * magnitude;
-            _rigidbody2D.AddForce(force, ForceMode2D.Impulse);
+            _rigidbody.AddForce(force, ForceMode2D.Impulse);
         }
 
         [SerializeField]
-        private Rigidbody2D _rigidbody2D;
+        private Rigidbody2D _rigidbody;
+        [SerializeField]
+        private SpriteRenderer _spriteRenderer;
         [SerializeField]
         private float _velocityMagnitude = 10;
         [SerializeField]
@@ -45,44 +47,55 @@ namespace Madnessnoid
         private LayerMask _deathZoneLayer;
         [SerializeField]
         private LayerMask _breakableLayer;
-        [SerializeField]
-        private List<AudioClip> _deathSounds = new();
-        [SerializeField]
-        private List<AudioClip> _collisionSounds = new();
-        [SerializeField]
-        private AudioClip _loseHitPointClip;
         
         private IGameConfig _gameConfig;
         private ILevelSession _levelSession;
         private IAudioController _audioController;
+        private IThemeProfileProvider _themeProfileProvider;
+        private ILevelTheme _activeLevelTheme = null;
+        private int _levelId = 0;
+
+        private void UpdateTheme()
+        {
+            var newTheme = _themeProfileProvider.ActiveTheme.LevelThemes[_levelId];
+            if (_activeLevelTheme != newTheme)
+            {
+                _activeLevelTheme = newTheme;
+                _spriteRenderer.sprite = _activeLevelTheme.BallIcon;
+            }
+        }
 
         private void OnEnable()
         {
             _levelSession.LevelCompleted += OnLevelCompleted;
             _levelSession.LevelChanged += OnLevelChanged;
+            _themeProfileProvider.ActiveThemeChanged += OnActiveThemeChanged;
             OnLevelChanged(_levelSession.LevelId);
+            OnActiveThemeChanged();
         }
 
         private void OnDisable()
         {
             _levelSession.LevelCompleted -= OnLevelCompleted;
             _levelSession.LevelChanged -= OnLevelChanged;
+            _themeProfileProvider.ActiveThemeChanged -= OnActiveThemeChanged;
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
             if (_deathZoneLayer.Contains(collision.gameObject.layer))
             {
-                _rigidbody2D.linearVelocity = Vector2.zero;
-                _rigidbody2D.angularVelocity = 0;
-                _rigidbody2D.rotation = 0;
-                _rigidbody2D.position = _spawnPoint.position;
+                _rigidbody.linearVelocity = Vector2.zero;
+                _rigidbody.angularVelocity = 0;
+                _rigidbody.rotation = 0;
+                _rigidbody.position = _spawnPoint.position;
                 IsPushed = false;
                 _levelSession.TakeDamage();
 
-                if (_loseHitPointClip != null)
+                if (_activeLevelTheme.LosingHitPointSounds.Count > 0)
                 {
-                    _audioController.PlaySfx(_loseHitPointClip);
+                    var clipIndex = Random.Range(0, _activeLevelTheme.LosingHitPointSounds.Count);
+                    _audioController.PlaySfx(_activeLevelTheme.LosingHitPointSounds[clipIndex]);
                 }
             }
         }
@@ -91,11 +104,6 @@ namespace Madnessnoid
         {
             if (_breakableLayer.Contains(collision.gameObject.layer))
             {
-                if (_deathSounds.Count > 0)
-                {
-                    var clipIndex = Random.Range(0, _deathSounds.Count);
-                    _audioController.PlaySfx(_deathSounds[clipIndex]);
-                }
                 if (collision.gameObject.TryGetComponent<BrickBehaviour>(out var brick))
                 {
                     brick.Damage(1);
@@ -107,42 +115,46 @@ namespace Madnessnoid
                 }
                 _levelSession.BreakTheBlock(0);
             }
-            if (_collisionSounds.Count > 0)
+            else if (_activeLevelTheme.WallCollisionSounds.Count > 0)
             {
-                var clipIndex = Random.Range(0, _collisionSounds.Count);
-                _audioController.PlaySfx(_collisionSounds[clipIndex]);
+                var clipIndex = Random.Range(0, _activeLevelTheme.WallCollisionSounds.Count);
+                _audioController.PlaySfx(_activeLevelTheme.WallCollisionSounds[clipIndex]);
             }
         }
 
         private void FixedUpdate()
         {
-            if (Mathf.Abs(_rigidbody2D.angularVelocity) > _velocityEpsilon
-                && Mathf.Abs(_rigidbody2D.angularVelocity - _angularVelocity) > float.Epsilon)
+            if (Mathf.Abs(_rigidbody.angularVelocity) > _velocityEpsilon
+                && Mathf.Abs(_rigidbody.angularVelocity - _angularVelocity) > float.Epsilon)
             {
-                _rigidbody2D.angularVelocity = _angularVelocity;
+                _rigidbody.angularVelocity = _angularVelocity;
             }
-            if ((Mathf.Abs(_rigidbody2D.linearVelocityX) > _velocityEpsilon
-                || Mathf.Abs(_rigidbody2D.linearVelocityY) > _velocityEpsilon)
-                && Mathf.Abs(_rigidbody2D.linearVelocity.magnitude - _velocityMagnitude) > float.Epsilon)
+            if ((Mathf.Abs(_rigidbody.linearVelocityX) > _velocityEpsilon
+                || Mathf.Abs(_rigidbody.linearVelocityY) > _velocityEpsilon)
+                && Mathf.Abs(_rigidbody.linearVelocity.magnitude - _velocityMagnitude) > float.Epsilon)
             {
-                var targetVelocity = _rigidbody2D.linearVelocity.normalized * _velocityMagnitude;
-                _rigidbody2D.linearVelocity = targetVelocity;
+                var targetVelocity = _rigidbody.linearVelocity.normalized * _velocityMagnitude;
+                _rigidbody.linearVelocity = targetVelocity;
             }
         }
 
         private void OnLevelCompleted(LevelCompletionResult result)
         {
-            _rigidbody2D.constraints = RigidbodyConstraints2D.FreezeAll;
+            _rigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
         }
 
         private void OnLevelChanged(int levelId)
         {
             if (levelId >= 0)
             {
+                _levelId = levelId;
                 var levelConfig = _gameConfig.LevelsConfig[levelId];
                 _velocityMagnitude = levelConfig.BallVelocity;
                 _angularVelocity = levelConfig.BallAngularVelocity;
+                UpdateTheme();
             }
         }
+
+        private void OnActiveThemeChanged() => UpdateTheme();
     }
 }

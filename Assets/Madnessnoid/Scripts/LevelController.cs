@@ -39,7 +39,7 @@ namespace Madnessnoid
         {
             if (_levelSession.LevelId >= 0)
             {
-                var background = _themeProfileProvider.ActiveTheme.LevelsBackground[_levelSession.LevelId].Image;
+                var background = _themeProfileProvider.ActiveTheme.LevelThemes[_levelSession.LevelId].Background.Image;
                 _levelBackground.sprite = background;
             }
         }

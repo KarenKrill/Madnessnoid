@@ -13,6 +13,12 @@ MonoBehaviour:
   m_Name: GameConfig
   m_EditorClassIdentifier: 
   _levelsConfig:
+  - <BlocksCount>k__BackingField: 40
+    <HitPointsCount>k__BackingField: 8
+    <BallVelocity>k__BackingField: 10
+    <BallAngularVelocity>k__BackingField: 220
+    <BaseCashReward>k__BackingField: 250
+    <HitPointCashRewardBonus>k__BackingField: 50
   - <BlocksCount>k__BackingField: 10
     <HitPointsCount>k__BackingField: 4
     <BallVelocity>k__BackingField: 6
@@ -23,11 +29,5 @@ MonoBehaviour:
     <HitPointsCount>k__BackingField: 6
     <BallVelocity>k__BackingField: 8
     <BallAngularVelocity>k__BackingField: 180
-    <BaseCashReward>k__BackingField: 250
-    <HitPointCashRewardBonus>k__BackingField: 50
-  - <BlocksCount>k__BackingField: 40
-    <HitPointsCount>k__BackingField: 8
-    <BallVelocity>k__BackingField: 10
-    <BallAngularVelocity>k__BackingField: 220
     <BaseCashReward>k__BackingField: 250
     <HitPointCashRewardBonus>k__BackingField: 50

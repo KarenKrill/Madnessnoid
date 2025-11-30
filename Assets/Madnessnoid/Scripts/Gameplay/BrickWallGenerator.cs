@@ -71,9 +71,12 @@ namespace Madnessnoid
             return;
         }
 
-        private void OnBrickDied(BrickBehaviour brick)
+        private void OnBrickDied(IDamagable damagable)
         {
-            _brickPool.Release(brick);
+            if (damagable is BrickBehaviour brick)
+            {
+                _brickPool.Release(brick);
+            }
         }
 
         private static Rect LerpRect(Rect a, Rect b, float t)

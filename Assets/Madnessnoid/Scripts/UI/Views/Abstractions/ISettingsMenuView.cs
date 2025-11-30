@@ -13,15 +13,11 @@ namespace Madnessnoid.UI.Views.Abstractions
         #endregion
 
         #region Music
-
         float MusicVolume { get; set; }
-
         #endregion
 
         #region Diagnostic
-
         bool ShowFps { get; set; }
-
         #endregion
 
         event Action? ApplyRequested;

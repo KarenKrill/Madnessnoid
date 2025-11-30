@@ -1,20 +1,19 @@
-﻿#nullable enable
-
-using System;
+﻿using System;
 
 using KarenKrill.UniCore.UI.Presenters.Abstractions;
 using KarenKrill.UniCore.UI.Views.Abstractions;
 
-using Madnessnoid.Abstractions;
-using Madnessnoid.UI.Views.Abstractions;
-
 namespace Madnessnoid.UI.Presenters
 {
     using Abstractions;
+    using Madnessnoid.Abstractions;
+    using Views.Abstractions;
 
     public class SettingsMenuPresenter : PresenterBase<ISettingsMenuView>, ISettingsMenuPresenter, IPresenter<ISettingsMenuView>
     {
+#nullable enable
         public event Action? Close;
+#nullable restore
 
         public SettingsMenuPresenter(IViewFactory viewFactory,
             IPresenterNavigator navigator,
@@ -32,7 +31,6 @@ namespace Madnessnoid.UI.Presenters
             View.ApplyRequested += OnApply;
             View.CancelRequested += OnCancel;
         }
-
         protected override void Unsubscribe()
         {
             _gameSettings.ShowFpsChanged -= OnModelShowFpsChanged;
@@ -44,16 +42,13 @@ namespace Madnessnoid.UI.Presenters
         private readonly GameSettings _gameSettings;
 
         private void OnModelShowFpsChanged(bool state) => View.ShowFps = state;
-
         private void OnModelMusicVolumeChanged(float musicVolume) => View.MusicVolume = musicVolume;
-
         private void OnApply()
         {
             _gameSettings.ShowFps = View.ShowFps;
             _gameSettings.MusicVolume = View.MusicVolume;
             Close?.Invoke();
         }
-
         private void OnCancel() => Close?.Invoke();
     }
 }

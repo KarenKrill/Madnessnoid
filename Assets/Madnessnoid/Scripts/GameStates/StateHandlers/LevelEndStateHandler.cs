@@ -5,11 +5,11 @@ using UnityEngine;
 using KarenKrill.UniCore.Input.Abstractions;
 using KarenKrill.UniCore.StateSystem.Abstractions;
 
-using Madnessnoid.Abstractions;
-using Madnessnoid.UI.Presenters.Abstractions;
-
 namespace Madnessnoid.GameStates
 {
+    using Abstractions;
+    using UI.Presenters.Abstractions;
+
     public class LevelEndStateHandler : PresentableStateHandlerBase<GameState>, IStateHandler<GameState>
     {
         public override GameState State => GameState.LevelEnd;
@@ -30,7 +30,6 @@ namespace Madnessnoid.GameStates
             _levelEndMenuPresenter = gameEndMenuPresenter;
             _actionsProvider = actionsProvider;
         }
-
         public override void Enter(GameState prevState, object? context = null)
         {
             _levelEndMenuPresenter.Continue += OnContinue;
@@ -47,7 +46,6 @@ namespace Madnessnoid.GameStates
             }
             _logger.Log(nameof(LevelEndStateHandler), nameof(Enter));
         }
-
         public override void Exit(GameState nextState)
         {
             _levelEndMenuPresenter.Continue -= OnContinue;
@@ -77,14 +75,11 @@ namespace Madnessnoid.GameStates
                 }
             }
         }
-
         private void OnRestart()
         {
             _gameFlow.StartLevel(_levelSession.LevelId);
         }
-
         private void OnMainMenu() => _gameFlow.LoadMainMenu();
-
         private void OnExit() => _gameFlow.Exit();
     }
 }

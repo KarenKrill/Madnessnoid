@@ -13,6 +13,8 @@ namespace Madnessnoid.UI.Views
     {
         #region Graphics
 
+        public bool PussyMode { get => _pussyModeToggle.isOn; set => _pussyModeToggle.isOn = value; }
+
         #endregion
 
         #region Music
@@ -30,6 +32,8 @@ namespace Madnessnoid.UI.Views
         public event Action ApplyRequested;
         public event Action CancelRequested;
 
+        [SerializeField]
+        private Toggle _pussyModeToggle;
         [SerializeField]
         private Toggle _showFpsToggle;
         [SerializeField]

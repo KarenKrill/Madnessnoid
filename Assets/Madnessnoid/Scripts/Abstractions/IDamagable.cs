@@ -8,6 +8,7 @@ namespace Madnessnoid.Abstractions
     {
         public float Health { get; }
 
+        public event Action<IDamagable>? Damaged;
         public event Action<IDamagable>? Died;
 
         public void Damage(float value);

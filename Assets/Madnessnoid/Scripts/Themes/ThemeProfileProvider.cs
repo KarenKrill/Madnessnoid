@@ -13,6 +13,16 @@ namespace Madnessnoid
 
         public event Action ActiveThemeChanged;
 
+        public void SetThemeProfile(ThemeProfile themeProfile)
+        {
+            if (_activeTheme != themeProfile)
+            {
+                _activeTheme = themeProfile;
+                _previousTheme = themeProfile;
+                ActiveThemeChanged?.Invoke();
+            }
+        }
+
         [SerializeField]
         private ThemeProfile _activeTheme;
         [SerializeField, HideInInspector]

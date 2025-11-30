@@ -110,14 +110,14 @@ namespace Madnessnoid.GameStates
         private void OnActiveThemeChanged()
         {
             _currThemeProfile = _themeProfileProvider.ActiveTheme;
-            int levelBackgroundIndex = _currThemeProfile.LevelsBackground.Count - 1;
-            if (_context?.LevelIndex < levelBackgroundIndex)
+            int levelThemeIndex = _currThemeProfile.LevelThemes.Count - 1;
+            if (_context?.LevelIndex < levelThemeIndex)
             {
-                levelBackgroundIndex = _context.LevelIndex;
+                levelThemeIndex = _context.LevelIndex;
             }
-            if (levelBackgroundIndex >= 0)
+            if (levelThemeIndex >= 0)
             {
-                var levelBackground = _currThemeProfile.LevelsBackground[levelBackgroundIndex];
+                var levelBackground = _currThemeProfile.LevelThemes[levelThemeIndex].Background;
                 _audioController.PlayMusic(levelBackground.Music);
             }
         }

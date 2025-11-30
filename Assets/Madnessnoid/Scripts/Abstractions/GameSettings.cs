@@ -32,6 +32,20 @@ namespace Madnessnoid.Abstractions
             }
         }
 
+        public bool PussyMode
+        {
+            get => _pussyMode;
+            set
+            {
+                if (_pussyMode != value)
+                {
+                    _pussyMode = value;
+                    PussyModeChanged?.Invoke(_pussyMode);
+                    OnSettingsChanged();
+                }
+            }
+        }
+
         #endregion
 
         #region Music
@@ -75,15 +89,18 @@ namespace Madnessnoid.Abstractions
 
         public event Action<QualityLevel>? QualityLevelChanged;
 
+        public event Action<bool>? PussyModeChanged;
+
         public event Action<float>? MusicVolumeChanged;
 
         public event Action<bool>? ShowFpsChanged;
 
         public event Action? SettingsChanged;
 
-        public GameSettings(QualityLevel qualityLevel = QualityLevel.High, float musicVolume = 0, bool showFps = false)
+        public GameSettings(QualityLevel qualityLevel = QualityLevel.High, bool pussuMode = false, float musicVolume = 0, bool showFps = false)
         {
             _qualityLevel = qualityLevel;
+            _pussyMode = pussuMode;
             _musicVolume = musicVolume;
             _showFps = showFps;
         }
@@ -106,6 +123,8 @@ namespace Madnessnoid.Abstractions
 
         [SerializeField]
         private QualityLevel _qualityLevel;
+        [SerializeField]
+        private bool _pussyMode;
         [SerializeField]
         private float _musicVolume;
         [SerializeField]

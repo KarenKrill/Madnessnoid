@@ -60,6 +60,10 @@ namespace Madnessnoid
         [SerializeField]
         private ThemeProfileProvider _themeProfileProvider;
         [SerializeField]
+        private ThemeProfile _defaultThemeProfile;
+        [SerializeField]
+        private ThemeProfile _pussyModeThemeProfile;
+        [SerializeField]
         private GameConfig _gameConfig;
         private ILogger _logger;
 
@@ -89,7 +93,14 @@ namespace Madnessnoid
 
         private void InstallSettings()
         {
-            Container.Bind<GameSettings>().To<GameSettings>().FromNew().AsSingle();
+            Container.Bind<GameSettings>().To<GameSettings>().FromNew().AsSingle().OnInstantiated((ctx, target) =>
+            {
+                if (target is GameSettings gameSettings)
+                {
+                    gameSettings.PussyModeChanged += OnPussyModeChanged;
+                    OnPussyModeChanged(gameSettings.PussyMode);
+                }
+            });
         }
 
         private void InstallInput()
@@ -150,6 +161,18 @@ namespace Madnessnoid
             foreach (var presenterType in presenterTypes)
             {
                 Container.BindInterfacesTo(presenterType).FromNew().AsSingle();
+            }
+        }
+
+        private void OnPussyModeChanged(bool enabled)
+        {
+            if (enabled)
+            {
+                _themeProfileProvider.SetThemeProfile(_pussyModeThemeProfile);
+            }
+            else
+            {
+                _themeProfileProvider.SetThemeProfile(_defaultThemeProfile);
             }
         }
     }

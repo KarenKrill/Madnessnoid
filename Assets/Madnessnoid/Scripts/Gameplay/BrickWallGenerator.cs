@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+
+using UnityEngine;
 
 using Zenject;
 
@@ -11,10 +13,15 @@ namespace Madnessnoid
     public class BrickWallGenerator : MonoBehaviour
     {
         [Inject]
-        public void Initialize(ILevelSession levelSession, IGameConfig gameConfig)
+        public void Initialize(ILevelSession levelSession,
+            IGameConfig gameConfig,
+            IThemeProfileProvider themeProfileProvider,
+            IAudioController audioController)
         {
             _levelSession = levelSession;
             _gameConfig = gameConfig;
+            _themeProfileProvider = themeProfileProvider;
+            _audioController = audioController;
         }
 
         [SerializeField]
@@ -35,7 +42,11 @@ namespace Madnessnoid
 
         private ILevelSession _levelSession;
         private IGameConfig _gameConfig;
+        private IThemeProfileProvider _themeProfileProvider;
+        private IAudioController _audioController;
         private ComponentPool<BrickBehaviour> _brickPool;
+        private readonly List<BrickBehaviour> _brickInstances = new();
+        private int _levelId = 0;
 
         private void Awake()
         {
@@ -50,33 +61,51 @@ namespace Madnessnoid
         private void OnEnable()
         {
             _levelSession.LevelChanged += OnLevelChanged;
+            _themeProfileProvider.ActiveThemeChanged += OnActiveThemeChanged;
         }
 
         private void OnDisable()
         {
             _levelSession.LevelChanged -= OnLevelChanged;
+            _themeProfileProvider.ActiveThemeChanged -= OnActiveThemeChanged;
         }
 
         private void GenerateLevelInternal(int bricksCount)
         {
+            ClearBrickPool();
             var brickBounds = _brickPrefab.gameObject.GetComponentInChildren<SpriteRenderer>().bounds;
             var positions = LayoutElements(bricksCount, brickBounds.size, _minBounds, _maxBounds, _maxOffset, out var bounds);
             foreach (var pos in positions)
             {
                 var brick = _brickPool.Get();
+                _brickInstances.Add(brick);
+                brick.Initialize(_audioController);
                 brick.transform.localPosition = pos;
                 brick.GetComponent<SpriteRenderer>().color = _gradient.Evaluate(pos.y / (bounds.height - 1));
                 brick.Died += OnBrickDied;
             }
+            UpdateBrickThemes();
             return;
         }
 
-        private void OnBrickDied(IDamagable damagable)
+        private void UpdateBrickThemes()
         {
-            if (damagable is BrickBehaviour brick)
+            var activeTheme = _themeProfileProvider.ActiveTheme;
+            var levelTheme = activeTheme.LevelThemes[_levelId];
+            foreach (var brick in _brickInstances)
+            {
+                var brickThemeIndex = Random.Range(0, levelTheme.BrickThemes.Count);
+                brick.BrickTheme = levelTheme.BrickThemes[brickThemeIndex];
+            }
+        }
+
+        private void ClearBrickPool()
+        {
+            foreach (var brick in _brickInstances)
             {
                 _brickPool.Release(brick);
             }
+            _brickInstances.Clear();
         }
 
         private static Rect LerpRect(Rect a, Rect b, float t)
@@ -147,11 +176,23 @@ namespace Madnessnoid
             return positions;
         }
 
+        private void OnBrickDied(IDamagable damagable)
+        {
+            if (damagable is BrickBehaviour brick)
+            {
+                _brickInstances.Remove(brick);
+                _brickPool.Release(brick);
+            }
+        }
+
         private void OnLevelChanged(int levelId)
         {
+            _levelId = levelId;
             var levelConfig = _gameConfig.LevelsConfig[levelId];
             var blocksCount = levelConfig.BlocksCount;
             GenerateLevelInternal(blocksCount);
         }
+
+        private void OnActiveThemeChanged() => UpdateBrickThemes();
     }
 }

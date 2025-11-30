@@ -10,6 +10,7 @@ namespace Madnessnoid
     {
         public float Health => _health;
 
+        public event Action<IDamagable> Damaged;
         public event Action<IDamagable> Died;
 
         public void Damage(float value)
@@ -26,8 +27,20 @@ namespace Madnessnoid
                     Died?.Invoke(this);
                 }
             }
+            else
+            {
+                try
+                {
+                    OnDamaged();
+                }
+                finally
+                {
+                    Damaged?.Invoke(this);
+                }
+            }
         }
 
+        protected virtual void OnDamaged() { }
         protected virtual void OnDied() { }
 
         [SerializeField]

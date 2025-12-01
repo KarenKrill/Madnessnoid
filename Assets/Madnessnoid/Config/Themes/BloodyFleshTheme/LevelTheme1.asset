@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 459e2db375a47f24a866e25e8aa1310d, type: 3}
+  m_Name: LevelTheme1
+  m_EditorClassIdentifier: Madnessnoid:Madnessnoid:LevelTheme
+  <BallSprite>k__BackingField: {fileID: 21300000, guid: a4e64eac14f754c4da778fee78895825, type: 3}
+  <PaddleSprite>k__BackingField: {fileID: 21300000, guid: 3fed320caa062e243a28c3b4f639fbeb, type: 3}
+  <WallCollisionSounds>k__BackingField:
+  - {fileID: 8300000, guid: 36ed2d1f4c4829e48836b2a2dd4cae49, type: 3}
+  <LosingHitPointSounds>k__BackingField:
+  - {fileID: 8300000, guid: 5bf2056b7700c704fb61c18fc84c0e42, type: 3}
+  _background:
+    <Image>k__BackingField: {fileID: 21300000, guid: ee46041de83d48048a50ec3ed6c0ccfd, type: 3}
+    <Music>k__BackingField: {fileID: 8300000, guid: 43a56efbffee5f94f97c1de2e2c67c04, type: 3}
+  _brickThemes:
+  - {fileID: 11400000, guid: f567efa17edc1b54485c5f4367df53c9, type: 2}
+  - {fileID: 11400000, guid: 8bd5dbb3571bcf043848cb7f1c9e1e1c, type: 2}

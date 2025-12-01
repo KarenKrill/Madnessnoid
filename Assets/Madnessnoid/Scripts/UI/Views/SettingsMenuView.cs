@@ -1,4 +1,5 @@
 ﻿using System;
+
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,21 +13,27 @@ namespace Madnessnoid.UI.Views
     {
         #region Graphics
 
+        public bool PussyMode { get => _pussyModeToggle.isOn; set => _pussyModeToggle.isOn = value; }
+
         #endregion
 
         #region Music
+
         public float MusicVolume { get => _musicVolumeSlider.normalizedValue; set => _musicVolumeSlider.normalizedValue = value; }
+
         #endregion
 
         #region Diagnostic
+
         public bool ShowFps { get => _showFpsToggle.isOn; set => _showFpsToggle.isOn = value; }
+
         #endregion
 
-#nullable enable
-        public event Action? ApplyRequested;
-        public event Action? CancelRequested;
-#nullable restore
+        public event Action ApplyRequested;
+        public event Action CancelRequested;
 
+        [SerializeField]
+        private Toggle _pussyModeToggle;
         [SerializeField]
         private Toggle _showFpsToggle;
         [SerializeField]
@@ -41,6 +48,7 @@ namespace Madnessnoid.UI.Views
             _applyButton.onClick.AddListener(OnApplyButtonClicked);
             _cancelButton.onClick.AddListener(OnCancelButtonClicked);
         }
+
         private void OnDisable()
         {
             _applyButton.onClick.RemoveListener(OnApplyButtonClicked);
@@ -48,6 +56,7 @@ namespace Madnessnoid.UI.Views
         }
 
         private void OnApplyButtonClicked() => ApplyRequested?.Invoke();
+
         private void OnCancelButtonClicked() => CancelRequested?.Invoke();
     }
 }

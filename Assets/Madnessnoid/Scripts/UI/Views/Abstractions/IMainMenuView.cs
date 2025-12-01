@@ -1,8 +1,10 @@
 ﻿#nullable enable
 
-using KarenKrill.UniCore.UI.Views.Abstractions;
 using System;
+
 using UnityEngine;
+
+using KarenKrill.UniCore.UI.Views.Abstractions;
 
 namespace Madnessnoid.UI.Views.Abstractions
 {

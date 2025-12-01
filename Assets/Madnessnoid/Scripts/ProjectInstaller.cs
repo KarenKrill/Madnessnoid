@@ -1,8 +1,11 @@
 using System.Collections.Generic;
+
 using UnityEngine;
 using UnityEngine.UI;
-using Zenject;
 
+using Zenject;
+using Cysharp.Threading.Tasks;
+    
 using KarenKrill.UniCore.Diagnostics;
 using KarenKrill.UniCore.Interactions;
 using KarenKrill.UniCore.Logging;
@@ -19,7 +22,6 @@ using KarenKrill.DataStorage;
 namespace Madnessnoid
 {
     using Abstractions;
-    using Cysharp.Threading.Tasks;
     using GameStates;
     using Input;
 
@@ -58,6 +60,10 @@ namespace Madnessnoid
         [SerializeField]
         private ThemeProfileProvider _themeProfileProvider;
         [SerializeField]
+        private ThemeProfile _defaultThemeProfile;
+        [SerializeField]
+        private ThemeProfile _pussyModeThemeProfile;
+        [SerializeField]
         private GameConfig _gameConfig;
         private ILogger _logger;
 
@@ -69,6 +75,7 @@ namespace Madnessnoid
                 gameFlow.Exit();
             }
         }
+
         private void OnUnobservedTaskException(System.Exception ex)
         {
             _logger ??= Container.TryResolve<ILogger>();
@@ -83,14 +90,24 @@ namespace Madnessnoid
             Container.Bind<ILogger>().To<StubLogger>().FromNew().AsSingle();
 #endif
         }
+
         private void InstallSettings()
         {
-            Container.Bind<GameSettings>().To<GameSettings>().FromNew().AsSingle();
+            Container.Bind<GameSettings>().To<GameSettings>().FromNew().AsSingle().OnInstantiated((ctx, target) =>
+            {
+                if (target is GameSettings gameSettings)
+                {
+                    gameSettings.PussyModeChanged += OnPussyModeChanged;
+                    OnPussyModeChanged(gameSettings.PussyMode);
+                }
+            });
         }
+
         private void InstallInput()
         {
             Container.BindInterfacesAndSelfTo<InputActionService>().FromNew().AsSingle();
         }
+
         private void InstallGameStateMachine()
         {
             Container.Bind<IStateMachine<GameState>>()
@@ -118,6 +135,7 @@ namespace Madnessnoid
                 }
             }).NonLazy();
         }
+
         private void InstallViewFactory()
         {
             if (_uiRootTransform == null)
@@ -135,6 +153,7 @@ namespace Madnessnoid
             }
             Container.BindInterfacesAndSelfTo<ViewFactory>().AsSingle().WithArguments(_uiRootTransform.gameObject, _uiPrefabs);
         }
+
         private void InstallPresenterBindings()
         {
             Container.BindInterfacesAndSelfTo<PresenterNavigator>().AsTransient();
@@ -142,6 +161,18 @@ namespace Madnessnoid
             foreach (var presenterType in presenterTypes)
             {
                 Container.BindInterfacesTo(presenterType).FromNew().AsSingle();
+            }
+        }
+
+        private void OnPussyModeChanged(bool enabled)
+        {
+            if (enabled)
+            {
+                _themeProfileProvider.SetThemeProfile(_pussyModeThemeProfile);
+            }
+            else
+            {
+                _themeProfileProvider.SetThemeProfile(_defaultThemeProfile);
             }
         }
     }

@@ -7,7 +7,6 @@ namespace Madnessnoid.Abstractions
     public class GameStateGraph : IStateGraph<GameState>
     {
         public GameState InitialState => GameState.Initial;
-
         public IDictionary<GameState, IList<GameState>> Transitions => _transitions;
 
         private readonly IDictionary<GameState, IList<GameState>> _transitions = new Dictionary<GameState, IList<GameState>>()

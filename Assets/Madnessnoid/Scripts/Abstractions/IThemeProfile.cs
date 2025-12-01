@@ -7,7 +7,7 @@ namespace Madnessnoid.Abstractions
     public interface IThemeProfile
     {
         public ISceneBackgroundTheme MainMenuBackground { get; }
-        public List<ISceneBackgroundTheme> LevelsBackground { get; }
+        public List<ILevelTheme> LevelThemes { get; }
         public Sprite HitPointIcon { get; }
         public Sprite ScoreIcon { get; }
         public Sprite MoneyIcon { get; }
@@ -17,5 +17,24 @@ namespace Madnessnoid.Abstractions
     {
         public Sprite Image { get;}
         public AudioClip Music { get; }
+    }
+
+    public interface ILevelTheme
+    {
+        public ISceneBackgroundTheme Background { get; }
+        public Sprite BallSprite { get; }
+        public Sprite PaddleSprite { get; }
+        public List<AudioClip> WallCollisionSounds { get; }
+        public List<AudioClip> LosingHitPointSounds { get; }
+        public List<IBrickTheme> BrickThemes { get; }
+    }
+
+    public interface IBrickTheme
+    {
+        public Sprite Sprite { get; }
+        public List<AudioClip> DamageSounds { get; }
+        public List<AudioClip> FatalDamageSounds { get; }
+        public List<AnimationClip> DamageAnimations { get; }
+        public List<AnimationClip> FatalDamageAnimations { get; }
     }
 }

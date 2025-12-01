@@ -26,6 +26,7 @@ namespace Madnessnoid.GameStates
             _audioController = audioController;
             _diagnosticsPresenter = diagnosticsPresenter;
         }
+
         public void Enter(GameState prevState, object? context = null)
         {
             _logger.Log(nameof(InitialStateHandler), nameof(Enter));
@@ -39,6 +40,7 @@ namespace Madnessnoid.GameStates
             _audioController.MasterVolume = _gameSettings.MusicVolume;
             _gameFlow.LoadMainMenu();
         }
+
         public void Exit(GameState nextState)
         {
             _logger.Log(nameof(InitialStateHandler), nameof(Exit));
@@ -61,10 +63,12 @@ namespace Madnessnoid.GameStates
                 _diagnosticsPresenter.Disable();
             }
         }
+
         private void OnMusicVolumeChanged(float value)
         {
             _audioController.MasterVolume = value;
         }
+
         private void OnQualityLevelChanged(Abstractions.QualityLevel qualityLevel)
         {
         }

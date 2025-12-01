@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3fd85cf6be9ac0e43ababc1d86e86d64, type: 3}
-  m_Name: BloodyFleshTheme
+  m_Name: BloodyFleshThemeProfile
   m_EditorClassIdentifier: 
   <HitPointIcon>k__BackingField: {fileID: 21300000, guid: 0e1c5d482d66b6941aafb89c3bac56a6, type: 3}
   <ScoreIcon>k__BackingField: {fileID: 21300000, guid: 1b128927d8a4f2d4fbf01bc781f7e072, type: 3}
@@ -18,10 +18,7 @@ MonoBehaviour:
   _mainMenuBackground:
     <Image>k__BackingField: {fileID: 21300000, guid: ee46041de83d48048a50ec3ed6c0ccfd, type: 3}
     <Music>k__BackingField: {fileID: 8300000, guid: 60427cf3d80e5c84493a23afa7c2bf36, type: 3}
-  _levelsBackground:
-  - <Image>k__BackingField: {fileID: 21300000, guid: 93b67d752d7930344b35bd6b89555dfb, type: 3}
-    <Music>k__BackingField: {fileID: 8300000, guid: 43a56efbffee5f94f97c1de2e2c67c04, type: 3}
-  - <Image>k__BackingField: {fileID: 21300000, guid: ee46041de83d48048a50ec3ed6c0ccfd, type: 3}
-    <Music>k__BackingField: {fileID: 8300000, guid: 43a56efbffee5f94f97c1de2e2c67c04, type: 3}
-  - <Image>k__BackingField: {fileID: 21300000, guid: d02e9d1fa2fd6f74186d8857185491ea, type: 3}
-    <Music>k__BackingField: {fileID: 8300000, guid: 43a56efbffee5f94f97c1de2e2c67c04, type: 3}
+  _levelThemes:
+  - {fileID: 11400000, guid: ee7299dce6320874e8ed03166d8620e9, type: 2}
+  - {fileID: 11400000, guid: c941a710001497f40ab7764477c09956, type: 2}
+  - {fileID: 11400000, guid: 7f42545f51bdfaa4b83c26aabeba4f98, type: 2}

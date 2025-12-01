@@ -1,10 +1,10 @@
 using System;
+using UnityEngine;
 
 namespace Madnessnoid
 {
     using Abstractions;
-    using UnityEngine;
-
+    
     public class LevelSession : ILevelSession
     {
         public int LevelId { get; private set; } = -1;
@@ -49,6 +49,7 @@ namespace Madnessnoid
                 throw new ArgumentException(nameof(levelId), $"LevelsConfigCount({_gameConfig.LevelsConfig.Count}) < LevelId({levelId})");
             }
         }
+
         public void BreakTheBlock(int blockId)
         {
             _remainedBlocksCount--;
@@ -72,6 +73,7 @@ namespace Madnessnoid
                 }
             }
         }
+
         public void TakeDamage()
         {
             if (HitPointsCount > 0)
@@ -89,7 +91,7 @@ namespace Madnessnoid
                 }
                 finally
                 {
-                    if(isLevelLost)
+                    if (isLevelLost)
                     {
                         LevelCompleted?.Invoke(new(HitPointsCount));
                     }

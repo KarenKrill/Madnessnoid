@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: ec885d5b1905c8145b8ee3c41c20aca4
+guid: d929c68707ef5eb4b96f33b8eeba701d
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8545820707795445660
-    second: HorrorBrickIcon1_0
+      213: -4622925908664850604
+    second: HorrorBrickIcon2_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,12 +126,12 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: HorrorBrickIcon1_0
+      name: HorrorBrickIcon2_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 1
         y: 0
-        width: 256
+        width: 254
         height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 468dcad0855276980800000000000000
-      internalID: -8545820707795445660
+      spriteID: 457e41f116118dfb0800000000000000
+      internalID: -4622925908664850604
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      HorrorBrickIcon1_0: -8545820707795445660
+      HorrorBrickIcon2_0: -4622925908664850604
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

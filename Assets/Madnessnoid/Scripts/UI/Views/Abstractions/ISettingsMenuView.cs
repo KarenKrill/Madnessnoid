@@ -10,14 +10,20 @@ namespace Madnessnoid.UI.Views.Abstractions
     {
         #region Graphics
 
+        bool PussyMode { get; set; }
+
         #endregion
 
         #region Music
+
         float MusicVolume { get; set; }
+
         #endregion
 
         #region Diagnostic
+
         bool ShowFps { get; set; }
+
         #endregion
 
         event Action? ApplyRequested;

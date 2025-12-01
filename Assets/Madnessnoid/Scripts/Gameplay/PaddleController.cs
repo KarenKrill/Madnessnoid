@@ -11,14 +11,20 @@ using Madnessnoid.Input.Abstractions;
 
 namespace Madnessnoid
 {
-    public class PaddleMovement : MonoBehaviour
+    using Abstractions;
+
+    public class PaddleController : MonoBehaviour
     {
         [Inject]
         public void Initialize(ILogger logger,
-            IPlayerActionsProvider playerActionsProvider)
+            IPlayerActionsProvider playerActionsProvider,
+            ILevelSession levelSession,
+            IThemeProfileProvider themeProfileProvider)
         {
             _logger = logger;
             _playerActionsProvider = playerActionsProvider;
+            _levelSession = levelSession;
+            _themeProfileProvider = themeProfileProvider;
         }
 
         [SerializeField]
@@ -40,6 +46,8 @@ namespace Madnessnoid
 
         private ILogger _logger;
         private IPlayerActionsProvider _playerActionsProvider;
+        private ILevelSession _levelSession;
+        private IThemeProfileProvider _themeProfileProvider;
         private readonly InputAction _touchPosAction = new(type: InputActionType.Value, binding: "<Touchscreen>/primarytouch/position");
         private readonly InputAction _touch0PosAction = new(type: InputActionType.Value, binding: "<Touchscreen>/touch0/position");
         private readonly InputAction _touch1PosAction = new(type: InputActionType.Value, binding: "<Touchscreen>/touch1/position");
@@ -56,6 +64,7 @@ namespace Madnessnoid
         {
             _paddleSize = GetRendererWorldSize(_paddleRenderer);
         }
+
         private void OnEnable()
         {
             if (Application.isMobilePlatform)
@@ -80,7 +89,11 @@ namespace Madnessnoid
                 _playerActionsProvider.MoveCancel += OnMoveCancel;
                 _playerActionsProvider.Attack += OnAttack;
             }
+            _levelSession.LevelChanged += OnLevelChanged;
+            _themeProfileProvider.ActiveThemeChanged += OnActiveThemeChanged;
+            OnActiveThemeChanged();
         }
+
         private void OnDisable()
         {
             if (Application.isMobilePlatform)
@@ -105,12 +118,17 @@ namespace Madnessnoid
                 _playerActionsProvider.MoveCancel -= OnMoveCancel;
                 _playerActionsProvider.Attack -= OnAttack;
             }
+            _levelSession.LevelChanged -= OnLevelChanged;
+            _themeProfileProvider.ActiveThemeChanged -= OnActiveThemeChanged;
         }
+
         private bool IsTouchToTheLeftFromPaddleCenter(Vector2 paddlePos)
         {
             return _touchPosition < (paddlePos.x - _paddleSize.x / 2);
         }
+
         Vector2 GetRendererWorldSize(SpriteRenderer sr) => Vector2.Scale(sr.size, sr.transform.lossyScale);
+
         private void UpdateTouchDirection(Vector2 touchPos)
         {
             var pos = ScreenToWorld2D(touchPos);
@@ -118,15 +136,17 @@ namespace Madnessnoid
             _isLeftTouchDirection = IsTouchToTheLeftFromPaddleCenter(_paddleTransform.position);
             _touchDirection = _isLeftTouchDirection ? -1 : 1;
         }
+
         private Vector3 ScreenToWorld2D(Vector2 touchPos)
         {
             var rect = _camera.pixelRect;
-            // поправка на letterbox или другие искажения экрана
+            // Correction for LetterBox or other screen distortions
             touchPos.x = Mathf.Clamp(touchPos.x - rect.x, 0, rect.width);
             touchPos.y = Mathf.Clamp(touchPos.y - rect.y, 0, rect.height);
             float distance = _camera.orthographic ? Mathf.Abs(_camera.transform.position.z) : 0;
             return _camera.ScreenToWorldPoint(new Vector3(touchPos.x, touchPos.y, distance));
         }
+
         private void OnMoveStarted()
         {
             if (!Application.isMobilePlatform && !_ballController.IsPushed)
@@ -149,7 +169,9 @@ namespace Madnessnoid
                 }
             }).Forget();
         }
+
         private void OnMoveCancel() => _moveCts?.Cancel();
+
         private void OnTouchPosActionPerformed(InputAction.CallbackContext ctx)
         {
             if (ctx.control.parent is TouchControl touchControl)
@@ -158,11 +180,24 @@ namespace Madnessnoid
                 UpdateTouchDirection(pos);
             }
         }
+
         private void OnAttack()
         {
             if (!_ballController.IsPushed)
             {
                 _ballController.Push(Vector2.up, _startImpulseStrenth);
+            }
+        }
+
+        private void OnLevelChanged(int levelId) => OnActiveThemeChanged();
+
+        private void OnActiveThemeChanged()
+        {
+            var levelId = _levelSession.LevelId;
+            if (levelId >= 0)
+            {
+                _paddleRenderer.sprite = _themeProfileProvider.ActiveTheme.LevelThemes[levelId].PaddleSprite;
+                _paddleSize = GetRendererWorldSize(_paddleRenderer);
             }
         }
 
@@ -207,7 +242,7 @@ namespace Madnessnoid
             catch (OperationCanceledException) { }
             catch (Exception ex)
             {
-                _logger.LogError(nameof(PaddleMovement), ex);
+                _logger.LogError(nameof(PaddleController), ex);
             }
         }
     }
